@@ -10,7 +10,6 @@ import {
   type Edge,
   type Node,
   type NodeTypes,
-  type ReactFlowInstance,
   EdgeLabelRenderer,
   BaseEdge,
   getStraightPath,
@@ -21,7 +20,7 @@ import "@xyflow/react/dist/style.css";
 import { motion, AnimatePresence } from "framer-motion";
 import WordNode from "./WordNode";
 import RelationPicker from "./RelationPicker";
-import type { Relation, InventoryWord } from "./data";
+import type { Relation } from "./data";
 import { validateConnection, relations } from "./data";
 
 const nodeTypes: NodeTypes = { word: WordNode };
@@ -32,10 +31,6 @@ interface PendingConnection {
   sourceWord: string;
   targetWord: string;
   screenPos: { x: number; y: number };
-}
-
-interface ShakingEdge {
-  id: string;
 }
 
 // Custom labeled edge
@@ -117,21 +112,17 @@ function RelationEdge({
 const edgeTypes = { relation: RelationEdge };
 
 function CanvasInner({
-  inventoryWords,
   onUsedWordsChange,
 }: {
-  inventoryWords: InventoryWord[];
   onUsedWordsChange: (ids: Set<string>) => void;
 }) {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
-  const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
   const { screenToFlowPosition } = useReactFlow();
 
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [pendingConnection, setPendingConnection] =
     useState<PendingConnection | null>(null);
-  const [shakingEdges, setShakingEdges] = useState<Set<string>>(new Set());
 
   // Track which words are on the canvas
   const getUsedWordIds = useCallback(
@@ -162,6 +153,9 @@ function CanvasInner({
       const wordId = e.dataTransfer.getData("application/word-id");
       const wordText = e.dataTransfer.getData("application/word-text");
       const wordHint = e.dataTransfer.getData("application/word-hint");
+      const wordContext =
+        e.dataTransfer.getData("application/word-context") ||
+        e.dataTransfer.getData("application/word-hint");
 
       if (!wordId || !wordText) return;
 
@@ -180,6 +174,7 @@ function CanvasInner({
         data: {
           word: wordText,
           hint: wordHint,
+          contextSentence: wordContext,
           wordId,
           status: "idle",
           onRemove: handleRemoveNode,
@@ -238,14 +233,7 @@ function CanvasInner({
   );
 
   function triggerShake(edgeId: string) {
-    setShakingEdges((prev) => new Set(prev).add(edgeId));
     setTimeout(() => {
-      setShakingEdges((prev) => {
-        const next = new Set(prev);
-        next.delete(edgeId);
-        return next;
-      });
-      // Remove the edge after shake
       setEdges((eds) => eds.filter((e) => e.id !== edgeId));
     }, 600);
   }
@@ -328,7 +316,7 @@ function CanvasInner({
         </div>
         {nodes.length === 0 && (
           <span className="text-xs text-[#3B82F6] font-bold ml-auto">
-            ← Sleep een woord hierheen om te beginnen
+            Sleep hier je eerste woord naar het veld
           </span>
         )}
       </div>
@@ -348,7 +336,6 @@ function CanvasInner({
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
-          onInit={setRfInstance}
           fitView
           proOptions={{ hideAttribution: true }}
           deleteKeyCode={null}
@@ -375,7 +362,7 @@ function CanvasInner({
                     Jouw conceptkaart
                   </p>
                   <p className="text-slate-300 text-sm mt-1">
-                    Sleep woorden hierheen vanuit de lijst
+                    Sleep twee woorden hierheen om te starten
                   </p>
                 </div>
               </motion.div>
@@ -398,18 +385,13 @@ function CanvasInner({
 
 // Wrap in provider so useReactFlow works
 export default function SemanticCanvas({
-  inventoryWords,
   onUsedWordsChange,
 }: {
-  inventoryWords: InventoryWord[];
   onUsedWordsChange: (ids: Set<string>) => void;
 }) {
   return (
     <ReactFlowProvider>
-      <CanvasInner
-        inventoryWords={inventoryWords}
-        onUsedWordsChange={onUsedWordsChange}
-      />
+      <CanvasInner onUsedWordsChange={onUsedWordsChange} />
     </ReactFlowProvider>
   );
 }

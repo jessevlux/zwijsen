@@ -21,7 +21,8 @@ export default function WelcomeScreen({ onSelect }: Props) {
           Zwijsen Interactief
         </h1>
         <p className="mt-3 text-slate-500 text-lg max-w-md mx-auto leading-relaxed">
-          Kies een concept om te verkennen. Elk scherm laat een andere manier zien om woordenschat te leren.
+          Kies een concept om te verkennen. Elk scherm laat een andere manier
+          zien om woordenschat te leren.
         </p>
       </motion.div>
 
@@ -31,7 +32,12 @@ export default function WelcomeScreen({ onSelect }: Props) {
             key={concept.id}
             initial={{ y: 24, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.08 * i, type: "spring", stiffness: 260, damping: 20 }}
+            transition={{
+              delay: 0.08 * i,
+              type: "spring",
+              stiffness: 260,
+              damping: 20,
+            }}
             whileHover={{ scale: 1.04, y: -2 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => onSelect(concept.id)}
@@ -53,7 +59,10 @@ export default function WelcomeScreen({ onSelect }: Props) {
             >
               {concept.title}
             </h3>
-            <p className="text-xs leading-relaxed" style={{ color: concept.colorText, opacity: 0.8 }}>
+            <p
+              className="text-xs leading-relaxed"
+              style={{ color: concept.colorText, opacity: 0.8 }}
+            >
               {concept.grade} · {concept.theme}
             </p>
           </motion.button>
@@ -68,9 +77,12 @@ export default function WelcomeScreen({ onSelect }: Props) {
         >
           <div>
             <span className="text-3xl">👩‍🏫</span>
-            <h3 className="font-black text-base mt-3 mb-1">Redacteursweergave</h3>
+            <h3 className="font-black text-base mt-3 mb-1">
+              Redacteursweergave
+            </h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Open het paneel rechts om AI-content te reviewen, definities aan te passen en woorden goed te keuren.
+              Open het paneel rechts om AI-content te reviewen, definities aan
+              te passen en woorden goed te keuren.
             </p>
           </div>
           <div className="mt-4 text-xs text-[#FF7A35] font-bold">

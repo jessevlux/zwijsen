@@ -8,7 +8,11 @@ interface Props {
   onCancel: () => void;
 }
 
-export default function RelationPicker({ position, onSelect, onCancel }: Props) {
+export default function RelationPicker({
+  position,
+  onSelect,
+  onCancel,
+}: Props) {
   return (
     <AnimatePresence>
       {/* Backdrop to cancel on outside click */}
@@ -41,7 +45,7 @@ export default function RelationPicker({ position, onSelect, onCancel }: Props) 
           {relations.map((rel) => (
             <motion.button
               key={rel.value}
-              whileHover={{ scale: 1.03, x: 2 }}
+              whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => onSelect(rel.value)}
               className="w-full flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-bold text-left transition-colors cursor-pointer hover:opacity-90"
@@ -52,7 +56,9 @@ export default function RelationPicker({ position, onSelect, onCancel }: Props) 
                 minHeight: 48,
               }}
             >
-              <span className="text-lg leading-none">{rel.emoji.replace(/[🔵🔴🟡🟢]/u, "")}</span>
+              <span className="text-lg leading-none">
+                {rel.emoji.replace(/[🔵🔴🟡🟢]/u, "")}
+              </span>
               <div
                 className="w-3 h-3 rounded-full shrink-0"
                 style={{ backgroundColor: rel.color }}
