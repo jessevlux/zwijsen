@@ -6,6 +6,7 @@ import WelcomeScreen from "./WelcomeScreen";
 import ConceptPlaceholder from "../concepts/ConceptPlaceholder";
 import ConceptKaart from "../concepts/ConceptKaart";
 import SwipeKaarten from "../concepts/SwipeKaarten";
+import RaadCoach from "../concepts/RaadCoach";
 import { concepts } from "../../data/concepts";
 
 function renderConcept(id: string) {
@@ -14,6 +15,8 @@ function renderConcept(id: string) {
       return <ConceptKaart />;
     case "swipe-kaarten":
       return <SwipeKaarten />;
+    case "raad-coach":
+      return <RaadCoach />;
     default: {
       const concept = concepts.find((c) => c.id === id);
       return concept ? <ConceptPlaceholder concept={concept} /> : null;
@@ -25,10 +28,11 @@ export default function AppShell() {
   const [activeId, setActiveId] = useState<string | null>(null);
 
   // ConceptKaart needs h-full without scroll, others need scroll
-  const isFullHeight = activeId === "concept-kaart" || activeId === "swipe-kaarten";
+  const isFullHeight =
+    activeId === "concept-kaart" || activeId === "swipe-kaarten" || activeId === "raad-coach";
 
   return (
-    <div className="flex flex-col h-screen bg-canvas-bg overflow-hidden">
+    <div className="flex flex-col h-screen bg-surface-base overflow-hidden">
       {/* Top navigation */}
       <TopNav
         activeId={activeId ?? ""}
@@ -80,7 +84,7 @@ export default function AppShell() {
           Zwijsen PoC · Iteratie 0 · Groep 4–8
         </span>
         <div className="flex items-center gap-1.5">
-          <div className="w-2 h-2 rounded-full bg-brand-green animate-pulse" />
+          <div className="w-2 h-2 rounded-full bg-accent-success animate-pulse" />
           <span className="text-xs text-slate-400">Human-in-the-loop actief</span>
         </div>
       </footer>

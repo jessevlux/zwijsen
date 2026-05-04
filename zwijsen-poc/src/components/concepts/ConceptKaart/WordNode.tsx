@@ -40,17 +40,17 @@ export default function WordNode({
   }, [infoOpen]);
 
   const borderColor: Record<NodeStatus, string> = {
-    idle: "#CBD5E1",
-    connected: "#93C5FD",
-    correct: "#4ADE80",
-    wrong: "#F87171",
+    idle: "#E8E8EA",
+    connected: "#63B3ED",
+    correct: "#48BB78",
+    wrong: "#F56565",
   };
 
   const bgColor: Record<NodeStatus, string> = {
     idle: "#FFFFFF",
-    connected: "#EFF6FF",
-    correct: "#F0FDF4",
-    wrong: "#FEF2F2",
+    connected: "#E4F0FB",
+    correct: "#E6F6EC",
+    wrong: "#FCE6E6",
   };
 
   return (
@@ -66,7 +66,7 @@ export default function WordNode({
         type="source"
         position={Position.Left}
         id="left"
-        className="!w-4 !h-4 !border-2 !border-[#3B82F6] !bg-white !rounded-full transition-opacity duration-150"
+        className="!w-4 !h-4 !border-2 !border-[#4299E1] !bg-white !rounded-full transition-opacity duration-150"
         style={{ opacity: hovered ? 1 : 0, cursor: "crosshair" }}
       />
 
@@ -85,7 +85,7 @@ export default function WordNode({
           </p>
           <button
             type="button"
-            className="nodrag nopan flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-slate-100 hover:text-[#3B82F6] cursor-pointer"
+            className="nodrag nopan flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-slate-100 hover:text-[#4299E1] cursor-pointer"
             aria-expanded={infoOpen}
             aria-label={`Meer uitleg bij ${data.word}`}
             title="Meer uitleg (context)"
@@ -155,7 +155,7 @@ export default function WordNode({
         type="target"
         position={Position.Right}
         id="right"
-        className="!w-4 !h-4 !border-2 !border-[#3B82F6] !bg-white !rounded-full transition-opacity duration-150"
+        className="!w-4 !h-4 !border-2 !border-[#4299E1] !bg-white !rounded-full transition-opacity duration-150"
         style={{ opacity: hovered ? 1 : 0, cursor: "crosshair" }}
       />
     </motion.div>

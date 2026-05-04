@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Wrench } from "lucide-react";
 import type { Concept } from "../../data/concepts";
+import { toneTokens } from "../../data/concepts";
 
 interface Props {
   concept: Concept;
@@ -41,6 +42,8 @@ const featurePoints: Record<string, string[]> = {
 
 export default function ConceptPlaceholder({ concept }: Props) {
   const points = featurePoints[concept.id] ?? [];
+  const { accentColor } = toneTokens[concept.tone];
+  const Icon = concept.Icon;
 
   return (
     <div className="flex flex-col items-center justify-center h-full px-6 py-12 text-center">
@@ -50,46 +53,41 @@ export default function ConceptPlaceholder({ concept }: Props) {
         transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.05 }}
         className="flex flex-col items-center gap-6 max-w-lg w-full"
       >
-        {/* Big emoji badge */}
         <div
-          className="w-28 h-28 rounded-3xl flex items-center justify-center text-6xl shadow-lg"
-          style={{ backgroundColor: concept.colorLight }}
+          className="w-28 h-28 rounded-3xl flex items-center justify-center bg-surface-card border-2 shadow-[var(--shadow-card)]"
+          style={{ borderColor: accentColor }}
         >
-          {concept.emoji}
+          <Icon className="h-12 w-12" style={{ color: accentColor }} strokeWidth={2} aria-hidden />
         </div>
 
-        {/* Title block */}
         <div>
           <div
-            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold mb-3"
-            style={{ backgroundColor: concept.colorLight, color: concept.colorText }}
+            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold mb-3 bg-surface-muted text-text-secondary border border-border-subtle"
           >
             Concept {concept.number} · {concept.grade}
           </div>
-          <h1 className="text-3xl font-black text-slate-800 leading-tight">
+          <h1 className="text-3xl font-black text-text-primary leading-tight">
             {concept.subtitle}
           </h1>
-          <p className="mt-2 text-slate-500 text-base leading-relaxed">
+          <p className="mt-2 text-text-secondary text-base leading-relaxed">
             {concept.description}
           </p>
         </div>
 
-        {/* Didactic goal callout */}
         <div
-          className="w-full rounded-2xl px-5 py-4 text-left"
-          style={{ backgroundColor: concept.colorLight }}
+          className="w-full rounded-2xl border-l-4 bg-surface-card border border-border-subtle px-5 py-4 text-left shadow-[var(--shadow-card)]"
+          style={{ borderLeftColor: accentColor }}
         >
-          <p className="text-xs font-black uppercase tracking-wider mb-1" style={{ color: concept.colorText }}>
+          <p className="text-xs font-black uppercase tracking-wider mb-1 text-text-secondary">
             Didactisch doel
           </p>
-          <p className="text-sm leading-relaxed" style={{ color: concept.colorText }}>
+          <p className="text-sm leading-relaxed text-text-primary">
             {concept.didacticGoal}
           </p>
         </div>
 
-        {/* Feature list */}
-        <div className="w-full rounded-2xl bg-white border border-slate-100 px-5 py-4 text-left space-y-3">
-          <p className="text-xs font-black uppercase tracking-wider text-slate-400">
+        <div className="w-full rounded-2xl bg-surface-card border border-border-subtle px-5 py-4 text-left space-y-3 shadow-[var(--shadow-card)]">
+          <p className="text-xs font-black uppercase tracking-wider text-text-secondary">
             Wat gaat hier komen
           </p>
           {points.map((point, i) => (
@@ -101,19 +99,18 @@ export default function ConceptPlaceholder({ concept }: Props) {
               className="flex items-start gap-3"
             >
               <div
-                className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center text-white text-xs font-black shrink-0"
-                style={{ backgroundColor: concept.color }}
+                className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center text-text-inverted text-xs font-black shrink-0"
+                style={{ backgroundColor: accentColor }}
               >
                 {i + 1}
               </div>
-              <p className="text-sm text-slate-600 leading-relaxed">{point}</p>
+              <p className="text-sm text-text-primary leading-relaxed">{point}</p>
             </motion.div>
           ))}
         </div>
 
-        {/* Coming soon badge */}
-        <div className="flex items-center gap-2 text-slate-400 text-sm font-bold">
-          <Wrench size={16} />
+        <div className="flex items-center gap-2 text-text-secondary text-sm font-bold">
+          <Wrench size={16} aria-hidden />
           Wordt gebouwd in Fase {concept.number + 1}
         </div>
       </motion.div>

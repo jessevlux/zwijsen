@@ -23,11 +23,11 @@ const overlayFor = (
   dir: SwipeDirection | "neutral",
   opts: { wrongShake: boolean; dragWrong: boolean },
 ) => {
-  if (opts.wrongShake) return "rgba(220, 38, 38, 0.12)";
+  if (opts.wrongShake) return "rgba(245, 101, 101, 0.12)";
   if (dir === "neutral") return "rgba(255, 255, 255, 0)";
-  if (dir === "up") return "rgba(147, 51, 234, 0.14)";
-  if (opts.dragWrong) return "rgba(220, 38, 38, 0.1)";
-  return "rgba(34, 197, 94, 0.14)";
+  if (dir === "up") return "rgba(66, 153, 225, 0.14)";
+  if (opts.dragWrong) return "rgba(245, 101, 101, 0.1)";
+  return "rgba(72, 187, 120, 0.14)";
 };
 
 function parsePrompt(prompt: string) {
@@ -180,7 +180,7 @@ export const SwipeCard = forwardRef<
         >
           <div
             className={`relative overflow-hidden rounded-3xl border-2 bg-white p-6 shadow-xl transition-[box-shadow] duration-200 ${
-              wrongShake ? "border-red-300 shadow-red-100" : "border-black/10 shadow-black/10"
+              wrongShake ? "border-accent-danger/50 shadow-sm" : "border-black/10 shadow-black/10"
             }`}
           >
             <motion.div

@@ -1,19 +1,43 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-orange: #FF7A35;
-  --color-brand-orange-light: #FFD4B8;
-  --color-brand-blue: #3B82F6;
-  --color-brand-blue-light: #DBEAFE;
-  --color-brand-green: #22C55E;
-  --color-brand-green-light: #DCFCE7;
-  --color-brand-yellow: #FACC15;
-  --color-brand-yellow-light: #FEF9C3;
-  --color-brand-purple: #A855F7;
-  --color-brand-purple-light: #F3E8FF;
-  --color-editor-bg: #1E293B;
-  --color-editor-surface: #2D3F57;
-  --color-canvas-bg: #F8F5F0;
+  /* Brand */
+  --color-brand-orange: #ff6b00;
+  --color-brand-orange-hover: #e55f00;
+  --color-brand-orange-soft: #fff1e5;
+
+  /* Surfaces & lines */
+  --color-surface-base: #fdfbf7;
+  --color-surface-card: #ffffff;
+  --color-surface-muted: #f1f2f4;
+  --color-border-subtle: #e8e8ea;
+  --color-border-strong: #2d3748;
+
+  /* Typography */
+  --color-text-primary: #2d3748;
+  --color-text-secondary: #718096;
+  --color-text-muted: #a0aec0;
+  --color-text-inverted: #ffffff;
+
+  /* Accents (categorie + feedback) */
+  --color-accent-success: #48bb78;
+  --color-accent-success-soft: #e6f6ec;
+  --color-accent-info: #4299e1;
+  --color-accent-info-soft: #e4f0fb;
+  --color-accent-danger: #f56565;
+  --color-accent-danger-soft: #fce6e6;
+  --color-accent-amber: #d69e2e;
+  --color-accent-amber-soft: #faf5e8;
+  --color-accent-violet: #805ad5;
+  --color-accent-violet-soft: #ede9f7;
+
+  /* Editor */
+  --color-editor-bg: #1f2733;
+  --color-editor-surface: #2a3441;
+
+  /* Shadows (use with shadow-[var(--shadow-card)] or extend) */
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-card-hover: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 *, *::before, *::after {
@@ -28,7 +52,7 @@ html, body, #root {
 
 body {
   font-family: "Nunito", system-ui, sans-serif;
-  background-color: #F8F5F0;
-  color: #1E293B;
+  background-color: var(--color-surface-base);
+  color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
 }

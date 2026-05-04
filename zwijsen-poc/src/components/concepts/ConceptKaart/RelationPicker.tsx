@@ -42,7 +42,9 @@ export default function RelationPicker({
           Wat is de relatie?
         </p>
         <div className="space-y-2">
-          {relations.map((rel) => (
+          {relations.map((rel) => {
+            const Icon = rel.Icon;
+            return (
             <motion.button
               key={rel.value}
               whileHover={{ scale: 1.03 }}
@@ -56,16 +58,15 @@ export default function RelationPicker({
                 minHeight: 48,
               }}
             >
-              <span className="text-lg leading-none">
-                {rel.emoji.replace(/[🔵🔴🟡🟢]/u, "")}
-              </span>
+              <Icon className="h-5 w-5 shrink-0" strokeWidth={2} aria-hidden />
               <div
                 className="w-3 h-3 rounded-full shrink-0"
                 style={{ backgroundColor: rel.color }}
               />
               <span>{rel.label}</span>
             </motion.button>
-          ))}
+            );
+          })}
         </div>
 
         {/* Cancel */}

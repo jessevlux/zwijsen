@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { Lightbulb, Link2, MousePointerClick } from "lucide-react";
+import { toneTokens } from "../../../data/concepts";
 import ConceptIntro from "../shared/ConceptIntro";
 import ConceptHeader from "../shared/ConceptHeader";
 import InventoryPanel from "./InventoryPanel";
@@ -7,10 +9,13 @@ import SemanticCanvas from "./SemanticCanvas";
 import { assignmentContext, inventoryCategories, inventoryWords } from "./data";
 import type { StepCfg } from "../shared/types";
 
-const ACCENT = "#3B82F6";
-const ACCENT_BG = "#EFF6FF";
+const { accentColor: ACCENT, accentSoft: ACCENT_BG } = toneTokens.info;
 
-const stepConfig: [StepCfg, StepCfg, StepCfg] = [{ emoji: "🖱️" }, { emoji: "🔗" }, { emoji: "💡" }];
+const stepConfig: [StepCfg, StepCfg, StepCfg] = [
+  { Icon: MousePointerClick },
+  { Icon: Link2 },
+  { Icon: Lightbulb },
+];
 
 const brief = {
   themeLabel: assignmentContext.themeLabel,
@@ -58,7 +63,7 @@ export default function ConceptKaart() {
                   stepConfig={stepConfig}
                   accentColor={ACCENT}
                   headerBg="#fff"
-                  borderColor="#E2E8F0"
+                  borderColor="var(--color-border-subtle)"
                 />
                 <SemanticCanvas onUsedWordsChange={setUsedWordIds} />
               </div>

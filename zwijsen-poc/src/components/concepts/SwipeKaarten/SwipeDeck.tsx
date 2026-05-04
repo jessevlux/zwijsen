@@ -125,13 +125,13 @@ export default function SwipeDeck() {
               {streak} op een rij
             </span>
           )}
-          <span className="shrink-0 rounded-full bg-[#FF7A35]/15 px-2 py-0.5 text-[11px] font-black text-[#C2410C]">
+          <span className="shrink-0 rounded-full bg-brand-orange-soft px-2 py-0.5 text-[11px] font-black text-brand-orange">
             {done ? "Klaar" : `${deck.length} in stapel`}
           </span>
         </div>
         <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-100">
           <motion.div
-            className="h-full rounded-full bg-gradient-to-r from-[#FF9A56] to-[#FF7A35]"
+            className="h-full rounded-full bg-brand-orange"
             initial={false}
             animate={{ width: `${progressPct}%` }}
             transition={{ type: "spring", stiffness: 280, damping: 28 }}
@@ -163,7 +163,7 @@ export default function SwipeDeck() {
                     {showSwipeHint && (
                       <p className="max-w-md px-1 text-center text-[11px] leading-snug text-zinc-500 sm:text-xs">
                         Sleep naar het woord aan de zijkant — of tik op de knop. Omhoog ={" "}
-                        <span className="font-semibold text-violet-700">lastig</span>: die kaart komt straks nog een
+                        <span className="font-semibold text-accent-info">lastig</span>: die kaart komt straks nog een
                         keer terug.
                       </p>
                     )}
@@ -177,10 +177,10 @@ export default function SwipeDeck() {
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.96, y: -6 }}
                             transition={{ type: "spring", stiffness: 440, damping: 26 }}
-                            className="pointer-events-none absolute inset-x-2 top-1/2 z-30 -translate-y-1/2 rounded-2xl border border-violet-200 bg-violet-50/95 px-3 py-2.5 text-center shadow-lg backdrop-blur-sm sm:inset-x-4"
+                            className="pointer-events-none absolute inset-x-2 top-1/2 z-30 -translate-y-1/2 rounded-2xl border border-accent-info bg-accent-info-soft/95 px-3 py-2.5 text-center shadow-lg backdrop-blur-sm sm:inset-x-4"
                           >
-                            <p className="text-sm font-black text-violet-900">Komt later terug!</p>
-                            <p className="mt-0.5 text-[11px] font-medium leading-snug text-violet-800/90">
+                            <p className="text-sm font-black text-accent-info">Komt later terug!</p>
+                            <p className="mt-0.5 text-[11px] font-medium leading-snug text-text-secondary">
                               Geen fout — we oefenen die straks nog een keer.
                             </p>
                           </motion.div>

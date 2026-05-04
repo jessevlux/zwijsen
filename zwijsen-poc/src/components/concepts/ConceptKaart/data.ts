@@ -1,3 +1,6 @@
+import type { LucideIcon } from "lucide-react";
+import { ArrowLeftRight, Boxes, Lightbulb, Link2 } from "lucide-react";
+
 export type Relation = "synoniem" | "tegenstelling" | "onderdeel van" | "voorbeeld van";
 
 export interface InventoryCategory {
@@ -65,11 +68,16 @@ export const inventoryCategories: InventoryCategory[] = [
   },
 ];
 
-export const relations: { value: Relation; label: string; emoji: string; color: string }[] = [
-  { value: "synoniem", label: "Synoniem", emoji: "🔵", color: "#3B82F6" },
-  { value: "tegenstelling", label: "Tegenstelling", emoji: "🔴", color: "#EF4444" },
-  { value: "onderdeel van", label: "Onderdeel van", emoji: "🟡", color: "#F59E0B" },
-  { value: "voorbeeld van", label: "Voorbeeld van", emoji: "🟢", color: "#22C55E" },
+export const relations: {
+  value: Relation;
+  label: string;
+  Icon: LucideIcon;
+  color: string;
+}[] = [
+  { value: "synoniem", label: "Synoniem", Icon: Link2, color: "#4299E1" },
+  { value: "tegenstelling", label: "Tegenstelling", Icon: ArrowLeftRight, color: "#F56565" },
+  { value: "onderdeel van", label: "Onderdeel van", Icon: Boxes, color: "#D69E2E" },
+  { value: "voorbeeld van", label: "Voorbeeld van", Icon: Lightbulb, color: "#48BB78" },
 ];
 
 /** Woordenschat Groep 8 — Taal Jacht — Thema: Vloggen */

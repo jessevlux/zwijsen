@@ -67,9 +67,9 @@ export default function InventoryPanel({
                         }
                         className="rounded-2xl px-4 py-3 font-bold text-sm leading-tight transition-all duration-200 select-none"
                         style={{
-                          backgroundColor: isUsed ? "#F1F5F9" : "#EFF6FF",
-                          color: isUsed ? "#94A3B8" : "#1D4ED8",
-                          border: `2px solid ${isUsed ? "#E2E8F0" : "#BFDBFE"}`,
+                          backgroundColor: isUsed ? "#F1F2F4" : "#E4F0FB",
+                          color: isUsed ? "#718096" : "#2B6CB0",
+                          border: `2px solid ${isUsed ? "#E8E8EA" : "#90CDF4"}`,
                           cursor: isUsed ? "default" : "grab",
                           opacity: isUsed ? 0.5 : 1,
                           minHeight: 48,
@@ -102,10 +102,10 @@ export default function InventoryPanel({
           Relaties
         </p>
         {[
-          { color: "#3B82F6", label: "Synoniem" },
-          { color: "#EF4444", label: "Tegenstelling" },
-          { color: "#F59E0B", label: "Onderdeel van" },
-          { color: "#22C55E", label: "Voorbeeld van" },
+          { color: "#4299E1", label: "Synoniem" },
+          { color: "#F56565", label: "Tegenstelling" },
+          { color: "#D69E2E", label: "Onderdeel van" },
+          { color: "#48BB78", label: "Voorbeeld van" },
         ].map(({ color, label }) => (
           <div key={label} className="flex items-center gap-2">
             <div

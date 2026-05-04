@@ -1,30 +1,30 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, ArrowUp } from "lucide-react";
+import { Keyboard, Lightbulb, Trophy } from "lucide-react";
 import { toneTokens } from "../../../data/concepts";
 import ConceptIntro from "../shared/ConceptIntro";
 import ConceptHeader from "../shared/ConceptHeader";
-import SwipeDeck from "./SwipeDeck";
-import { swipeAssignmentContext } from "./data";
 import type { StepCfg } from "../shared/types";
+import RaadCoachGame from "./RaadCoachGame";
+import { raadCoachAssignmentContext } from "./data";
 
-const { accentColor: ACCENT, accentSoft: ACCENT_BG } = toneTokens.warm;
+const { accentColor: ACCENT, accentSoft: ACCENT_BG } = toneTokens.success;
 
 const stepConfig: [StepCfg, StepCfg, StepCfg] = [
-  { Icon: ArrowLeft },
-  { Icon: ArrowRight },
-  { Icon: ArrowUp },
+  { Icon: Keyboard },
+  { Icon: Lightbulb },
+  { Icon: Trophy },
 ];
 
 const brief = {
-  themeLabel: swipeAssignmentContext.themeLabel,
-  title: swipeAssignmentContext.title,
-  situation: swipeAssignmentContext.situation,
-  question: swipeAssignmentContext.question,
-  steps: swipeAssignmentContext.steps,
+  themeLabel: raadCoachAssignmentContext.themeLabel,
+  title: raadCoachAssignmentContext.title,
+  situation: raadCoachAssignmentContext.situation,
+  question: raadCoachAssignmentContext.question,
+  steps: raadCoachAssignmentContext.steps,
 } as const;
 
-export default function SwipeKaarten() {
+export default function RaadCoach() {
   const [started, setStarted] = useState(false);
 
   return (
@@ -56,7 +56,7 @@ export default function SwipeKaarten() {
               headerBg={ACCENT_BG}
               borderColor="var(--color-border-subtle)"
             />
-            <SwipeDeck />
+            <RaadCoachGame accentColor={ACCENT} />
           </motion.div>
         )}
       </AnimatePresence>

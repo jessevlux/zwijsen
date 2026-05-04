@@ -46,7 +46,7 @@ export default function ConceptHeader({
         >
           {brief.themeLabel}
         </span>
-        <h2 className="min-w-0 flex-1 truncate text-base font-black leading-tight text-slate-900">
+        <h2 className="min-w-0 flex-1 truncate text-base font-black leading-tight text-text-primary">
           {brief.title}
         </h2>
         <button
@@ -95,7 +95,9 @@ export default function ConceptHeader({
                   >
                     Hoe werkt dit?
                   </h3>
-                  <p className="mt-1 text-sm leading-snug text-slate-500">{brief.situation}</p>
+                  <p className="mt-1 text-sm leading-snug text-slate-500">
+                    {brief.situation}
+                  </p>
                 </div>
                 <button
                   type="button"
@@ -120,7 +122,11 @@ export default function ConceptHeader({
                         borderColor: stepCardBorder(accentColor, idx),
                       }}
                     >
-                      <span className="mt-0.5 shrink-0 text-xl leading-none">{cfg.emoji}</span>
+                      <cfg.Icon
+                        className="mt-0.5 h-5 w-5 shrink-0 sm:h-6 sm:w-6"
+                        style={{ color: accentColor }}
+                        aria-hidden
+                      />
                       <div>
                         <span
                           className="text-[10px] font-black uppercase tracking-wider"
@@ -128,7 +134,9 @@ export default function ConceptHeader({
                         >
                           Stap {i + 1}
                         </span>
-                        <p className="mt-0.5 text-sm leading-snug text-slate-700">{step}</p>
+                        <p className="mt-0.5 text-sm leading-snug text-slate-700">
+                          {step}
+                        </p>
                       </div>
                     </li>
                   );

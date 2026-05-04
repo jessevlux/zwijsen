@@ -6,7 +6,7 @@ import { stepCardBackground, stepCardBorder } from "./stepCardTint";
 interface ConceptIntroProps {
   brief: ConceptBrief;
   stepConfig: [StepCfg, StepCfg, StepCfg];
-  /** Hoofd-accentkleur van het concept (bijv. "#FF7A35" of "#3B82F6") */
+  /** Hoofd-accentkleur van het concept (bijv. brand-oranje of info-blauw) */
   accentColor: string;
   /** Zachte achtergrondkleur passend bij het concept */
   accentBg: string;
@@ -32,7 +32,12 @@ export default function ConceptIntro({
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.04, type: "spring", stiffness: 320, damping: 30 }}
+        transition={{
+          delay: 0.04,
+          type: "spring",
+          stiffness: 320,
+          damping: 30,
+        }}
         className="mx-auto flex min-h-full w-full max-w-5xl flex-col justify-center gap-3 py-1"
       >
         <div className="grid grid-cols-1 gap-3">
@@ -43,10 +48,10 @@ export default function ConceptIntro({
             >
               {brief.themeLabel}
             </span>
-            <h1 className="mt-2 text-2xl font-black leading-tight text-slate-900 sm:text-[1.65rem]">
+            <h1 className="mt-2 text-2xl font-black leading-tight text-text-primary sm:text-[1.65rem]">
               {brief.title}
             </h1>
-            <p className="mt-1.5 text-sm leading-snug text-slate-600 sm:text-[0.9375rem]">
+            <p className="mt-1.5 text-sm leading-snug text-text-secondary sm:text-[0.9375rem]">
               {brief.situation}
             </p>
             <div
@@ -56,7 +61,10 @@ export default function ConceptIntro({
                 borderColor: `color-mix(in srgb, ${accentColor} 28%, white)`,
               }}
             >
-              <p className="text-sm font-bold leading-snug" style={{ color: accentColor }}>
+              <p
+                className="text-sm font-bold leading-snug"
+                style={{ color: accentColor }}
+              >
                 {brief.question}
               </p>
             </div>
@@ -72,16 +80,23 @@ export default function ConceptIntro({
                   key={i}
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.06 + i * 0.05, type: "spring", stiffness: 340, damping: 30 }}
+                  transition={{
+                    delay: 0.06 + i * 0.05,
+                    type: "spring",
+                    stiffness: 340,
+                    damping: 30,
+                  }}
                   className="flex h-full min-h-0 gap-2.5 rounded-xl border px-2.5 py-2 sm:gap-3 sm:px-3 sm:py-2.5"
                   style={{
                     backgroundColor: stepCardBackground(accentColor, idx),
                     borderColor: stepCardBorder(accentColor, idx),
                   }}
                 >
-                  <span className="shrink-0 text-lg leading-none sm:text-xl" aria-hidden>
-                    {cfg.emoji}
-                  </span>
+                  <cfg.Icon
+                    className="h-5 w-5 shrink-0 sm:h-6 sm:w-6"
+                    style={{ color: accentColor }}
+                    aria-hidden
+                  />
                   <div className="min-w-0">
                     <span
                       className="text-[9px] font-black uppercase tracking-wider sm:text-[10px]"
@@ -89,7 +104,7 @@ export default function ConceptIntro({
                     >
                       Stap {i + 1}
                     </span>
-                    <p className="mt-0.5 break-words text-[11px] leading-snug text-slate-800 sm:text-xs">
+                    <p className="mt-0.5 break-words text-[11px] leading-snug text-text-primary sm:text-xs">
                       {step}
                     </p>
                   </div>

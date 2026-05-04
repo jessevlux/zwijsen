@@ -1,12 +1,30 @@
+import type { LucideIcon } from "lucide-react";
+import { Globe, Layers, Mic, Network, Users } from "lucide-react";
+
+/** Visuele toon per concept: koppelt aan accentkleuren in het design system. */
+export type ConceptTone = "info" | "warm" | "success" | "violet" | "amber";
+
+export const toneTokens: Record<
+  ConceptTone,
+  { accentColor: string; accentSoft: string }
+> = {
+  info: { accentColor: "#4299E1", accentSoft: "#E4F0FB" },
+  warm: { accentColor: "#FF6B00", accentSoft: "#FFF1E5" },
+  success: { accentColor: "#48BB78", accentSoft: "#E6F6EC" },
+  violet: { accentColor: "#805AD5", accentSoft: "#EDE9F7" },
+  amber: { accentColor: "#D69E2E", accentSoft: "#FAF5E8" },
+};
+
 export interface Concept {
   id: string;
   number: number;
   title: string;
+  /** Langere beschrijving op placeholder-scherm */
   subtitle: string;
-  emoji: string;
-  color: string;
-  colorLight: string;
-  colorText: string;
+  /** Korte regel op dashboard: groep + thema */
+  dashboardSubtitle: string;
+  Icon: LucideIcon;
+  tone: ConceptTone;
   grade: string;
   theme: string;
   description: string;
@@ -19,10 +37,9 @@ export const concepts: Concept[] = [
     number: 1,
     title: "Conceptkaart",
     subtitle: "Semantische Conceptkaart",
-    emoji: "🕸️",
-    color: "#3B82F6",
-    colorLight: "#DBEAFE",
-    colorText: "#1D4ED8",
+    dashboardSubtitle: "Groep 4–8 · Woordrelaties",
+    Icon: Network,
+    tone: "info",
     grade: "Groep 4–8",
     theme: "Woordrelaties",
     description:
@@ -35,10 +52,9 @@ export const concepts: Concept[] = [
     number: 2,
     title: "Swipe-kaarten",
     subtitle: "Contextuele Swipe-Kaarten",
-    emoji: "🃏",
-    color: "#FF7A35",
-    colorLight: "#FFD4B8",
-    colorText: "#C2410C",
+    dashboardSubtitle: "Groep 4–8 · Woordbetekenis",
+    Icon: Layers,
+    tone: "warm",
     grade: "Groep 4–8",
     theme: "Woordbetekenis",
     description:
@@ -51,10 +67,9 @@ export const concepts: Concept[] = [
     number: 3,
     title: "Raad & Coach",
     subtitle: "Coöperatief Raad-en-Coach Spel",
-    emoji: "🤝",
-    color: "#22C55E",
-    colorLight: "#DCFCE7",
-    colorText: "#15803D",
+    dashboardSubtitle: "Groep 5–8 · Samenwerken",
+    Icon: Users,
+    tone: "success",
     grade: "Groep 5–8",
     theme: "Samenwerken",
     description:
@@ -67,10 +82,9 @@ export const concepts: Concept[] = [
     number: 4,
     title: "Woordenwereld",
     subtitle: "Immersieve Woordenwereld",
-    emoji: "🎭",
-    color: "#A855F7",
-    colorLight: "#F3E8FF",
-    colorText: "#7E22CE",
+    dashboardSubtitle: "Groep 4–6 · Poppenspel",
+    Icon: Globe,
+    tone: "violet",
     grade: "Groep 4–6",
     theme: "Poppenspel",
     description:
@@ -83,10 +97,9 @@ export const concepts: Concept[] = [
     number: 5,
     title: "Spraakstudio",
     subtitle: "Interactieve Storytelling & Spraakstudio",
-    emoji: "🎬",
-    color: "#FACC15",
-    colorLight: "#FEF9C3",
-    colorText: "#854D0E",
+    dashboardSubtitle: "Groep 7–8 · Vloggen",
+    Icon: Mic,
+    tone: "amber",
     grade: "Groep 7–8",
     theme: "Vloggen",
     description:

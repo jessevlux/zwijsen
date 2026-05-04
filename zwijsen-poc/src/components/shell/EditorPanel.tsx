@@ -28,20 +28,20 @@ const statusConfig: Record<
 > = {
   approved: {
     label: "Goedgekeurd",
-    color: "#15803D",
-    bg: "#DCFCE7",
+    color: "#276749",
+    bg: "#E6F6EC",
     Icon: CheckCircle2,
   },
   flagged: {
     label: "Controleren",
-    color: "#B45309",
-    bg: "#FEF3C7",
+    color: "#C53030",
+    bg: "#FCE6E6",
     Icon: AlertCircle,
   },
   pending: {
     label: "Wacht op review",
-    color: "#6366F1",
-    bg: "#EEF2FF",
+    color: "#2B6CB0",
+    bg: "#E4F0FB",
     Icon: Pencil,
   },
 };
@@ -90,7 +90,7 @@ export default function EditorPanel() {
         onClick={() => setIsOpen((v) => !v)}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="absolute top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-7 h-16 rounded-l-xl bg-[#1E293B] text-white shadow-lg cursor-pointer"
+        className="absolute top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-7 h-16 rounded-l-xl bg-editor-bg text-white shadow-lg cursor-pointer"
         style={{ right: isOpen ? "calc(100% - 7px)" : "-1px" }}
         title={isOpen ? "Paneel sluiten" : "Redacteurspaneel openen"}
       >
@@ -109,14 +109,14 @@ export default function EditorPanel() {
             animate={{ width: 340, opacity: 1 }}
             exit={{ width: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="overflow-hidden h-full bg-[#1E293B] text-white flex flex-col shadow-2xl"
+            className="overflow-hidden h-full bg-editor-bg text-white flex flex-col shadow-2xl"
             style={{ minWidth: 0 }}
           >
             <div className="flex flex-col h-full" style={{ width: 340 }}>
               {/* Panel header */}
               <div className="px-5 pt-5 pb-4 border-b border-white/10">
                 <div className="flex items-center gap-2 mb-1">
-                  <BookOpen size={18} className="text-[#FF7A35]" />
+                  <BookOpen size={18} className="text-brand-orange" />
                   <span className="font-black text-base tracking-tight">
                     Redacteurspaneel
                   </span>
@@ -126,7 +126,7 @@ export default function EditorPanel() {
                 </p>
 
                 {/* AI toggle */}
-                <div className="mt-4 flex items-center justify-between bg-[#2D3F57] rounded-xl px-4 py-3">
+                <div className="mt-4 flex items-center justify-between bg-editor-surface rounded-xl px-4 py-3">
                   <div>
                     <p className="font-bold text-sm">AI-suggesties</p>
                     <p className="text-xs text-slate-400">Automatisch genereren</p>
@@ -137,7 +137,7 @@ export default function EditorPanel() {
                     title="AI aan/uit"
                   >
                     {aiEnabled ? (
-                      <ToggleRight size={32} className="text-[#22C55E]" />
+                      <ToggleRight size={32} className="text-accent-success" />
                     ) : (
                       <ToggleLeft size={32} className="text-slate-500" />
                     )}
@@ -148,12 +148,12 @@ export default function EditorPanel() {
                 <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
                   <Tag size={12} />
                   <span>
-                    <span className="text-[#22C55E] font-bold">{approvedCount}</span>
+                    <span className="text-accent-success font-bold">{approvedCount}</span>
                     /{words.length} woorden goedgekeurd
                   </span>
                   <div className="flex-1 h-1.5 bg-slate-700 rounded-full overflow-hidden">
                     <motion.div
-                      className="h-full bg-[#22C55E] rounded-full"
+                      className="h-full bg-accent-success rounded-full"
                       animate={{ width: `${(approvedCount / words.length) * 100}%` }}
                       transition={{ duration: 0.4 }}
                     />
@@ -173,7 +173,7 @@ export default function EditorPanel() {
                     <motion.div
                       key={entry.id}
                       layout
-                      className="bg-[#2D3F57] rounded-xl p-3 space-y-2"
+                      className="bg-editor-surface rounded-xl p-3 space-y-2"
                     >
                       <div className="flex items-start justify-between gap-2">
                         <span className="font-black text-sm text-white">
@@ -198,14 +198,14 @@ export default function EditorPanel() {
                           <textarea
                             value={editValue}
                             onChange={(e) => setEditValue(e.target.value)}
-                            className="w-full bg-[#1E293B] text-white text-xs rounded-lg px-3 py-2 resize-none border border-[#FF7A35] outline-none"
+                            className="w-full bg-editor-bg text-white text-xs rounded-lg px-3 py-2 resize-none border border-brand-orange outline-none"
                             rows={2}
                             autoFocus
                           />
                           <div className="flex gap-2">
                             <button
                               onClick={() => saveEdit(entry.id)}
-                              className="flex-1 bg-[#22C55E] text-white text-xs font-bold rounded-lg py-1.5 cursor-pointer hover:bg-green-400 transition-colors"
+                              className="flex-1 bg-accent-success text-white text-xs font-bold rounded-lg py-1.5 cursor-pointer hover:opacity-90 transition-opacity"
                             >
                               Opslaan
                             </button>
@@ -238,7 +238,10 @@ export default function EditorPanel() {
 
               {/* Footer */}
               <div className="px-4 pb-5 pt-3 border-t border-white/10">
-                <button className="w-full bg-[#FF7A35] hover:bg-orange-400 transition-colors text-white font-black rounded-xl py-3 text-sm cursor-pointer">
+                <button
+                  type="button"
+                  className="w-full bg-brand-orange hover:bg-brand-orange-hover transition-colors text-text-inverted font-black rounded-xl py-3 text-sm cursor-pointer"
+                >
                   Alle goedgekeurde publiceren
                 </button>
               </div>

@@ -1,6 +1,8 @@
-/** Alleen icoon per stap; kleuren komen uit accent + stepCardTint. */
+import type { LucideIcon } from "lucide-react";
+
+/** Icoon per stap; kleuren komen uit accent + stepCardTint. */
 export interface StepCfg {
-  emoji: string;
+  Icon: LucideIcon;
 }
 
 export interface ConceptBrief {

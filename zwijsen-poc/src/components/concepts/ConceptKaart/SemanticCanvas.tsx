@@ -6,6 +6,7 @@ import {
   useNodesState,
   useEdgesState,
   addEdge,
+  ConnectionLineType,
   type Connection,
   type Edge,
   type Node,
@@ -18,12 +19,17 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { motion, AnimatePresence } from "framer-motion";
+import { Network } from "lucide-react";
 import WordNode from "./WordNode";
 import RelationPicker from "./RelationPicker";
 import type { Relation } from "./data";
 import { validateConnection, relations } from "./data";
 
 const nodeTypes: NodeTypes = { word: WordNode };
+
+/** Standaard lijn / verbinding; fout-tijdelijke lijn gebruikt WRONG_EDGE_COLOR. */
+const CONNECT_COLOR = "#4299E1";
+const WRONG_EDGE_COLOR = "#F56565";
 
 interface PendingConnection {
   source: string;
@@ -56,7 +62,7 @@ function RelationEdge({
     targetY,
   });
 
-  const color = data?.color ?? "#3B82F6";
+  const color = data?.color ?? CONNECT_COLOR;
 
   return (
     <>
@@ -279,7 +285,7 @@ function CanvasInner({
         type: "relation",
         data: {
           label: rel.label,
-          color: "#EF4444",
+          color: WRONG_EDGE_COLOR,
           shaking: true,
         },
       };
@@ -294,16 +300,14 @@ function CanvasInner({
     setPendingConnection(null);
   }
 
-  const scoreCorrect = edges.filter(
-    (e) => e.data?.color !== "#EF4444"
-  ).length;
+  const scoreCorrect = edges.filter((e) => e.data?.color !== WRONG_EDGE_COLOR).length;
 
   return (
     <div className="flex-1 flex flex-col relative overflow-hidden">
       {/* Score bar */}
-      <div className="px-5 py-2.5 bg-white border-b border-slate-100 flex items-center gap-4">
+      <div className="px-5 py-2.5 bg-surface-card border-b border-border-subtle flex items-center gap-4">
         <div className="flex items-center gap-2">
-          <div className="w-2.5 h-2.5 rounded-full bg-[#22C55E]" />
+          <div className="w-2.5 h-2.5 rounded-full bg-accent-success" />
           <span className="text-xs font-bold text-slate-600">
             {scoreCorrect} correct verbonden
           </span>
@@ -315,7 +319,7 @@ function CanvasInner({
           </span>
         </div>
         {nodes.length === 0 && (
-          <span className="text-xs text-[#3B82F6] font-bold ml-auto">
+          <span className="text-xs text-accent-info font-bold ml-auto">
             Sleep hier je eerste woord naar het veld
           </span>
         )}
@@ -339,8 +343,8 @@ function CanvasInner({
           fitView
           proOptions={{ hideAttribution: true }}
           deleteKeyCode={null}
-          connectionLineStyle={{ stroke: "#3B82F6", strokeWidth: 2 }}
-          connectionLineType={"straight" as any}
+          connectionLineStyle={{ stroke: CONNECT_COLOR, strokeWidth: 2 }}
+          connectionLineType={ConnectionLineType.Straight}
           snapToGrid
           snapGrid={[16, 16]}
         >
@@ -357,7 +361,9 @@ function CanvasInner({
                 className="absolute inset-0 flex items-center justify-center pointer-events-none"
               >
                 <div className="text-center">
-                  <p className="text-6xl mb-4">🕸️</p>
+                  <div className="mb-4 flex justify-center">
+                    <Network className="h-16 w-16 text-accent-info/35" strokeWidth={1.5} aria-hidden />
+                  </div>
                   <p className="font-black text-slate-300 text-xl">
                     Jouw conceptkaart
                   </p>

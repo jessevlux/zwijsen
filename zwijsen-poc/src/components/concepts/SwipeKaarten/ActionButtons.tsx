@@ -32,7 +32,7 @@ export default function ActionButtons({
         <button
           type="button"
           disabled={disabled}
-          className={`${base} max-w-[5.5rem] shrink-0 flex-col border-violet-300 bg-violet-50 px-2 py-2 text-violet-900 shadow-sm hover:bg-violet-100 sm:max-w-none sm:flex-row`}
+          className={`${base} max-w-[5.5rem] shrink-0 flex-col border-accent-info bg-accent-info-soft px-2 py-2 text-accent-info shadow-sm hover:opacity-90 sm:max-w-none sm:flex-row`}
           onClick={() => onAction("up")}
           aria-label="Lastig: deze kaart komt later nog een keer terug"
         >
