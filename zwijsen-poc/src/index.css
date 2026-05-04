@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-orange: #FF7A35;
+  --color-brand-orange-light: #FFD4B8;
+  --color-brand-blue: #3B82F6;
+  --color-brand-blue-light: #DBEAFE;
+  --color-brand-green: #22C55E;
+  --color-brand-green-light: #DCFCE7;
+  --color-brand-yellow: #FACC15;
+  --color-brand-yellow-light: #FEF9C3;
+  --color-brand-purple: #A855F7;
+  --color-brand-purple-light: #F3E8FF;
+  --color-editor-bg: #1E293B;
+  --color-editor-surface: #2D3F57;
+  --color-canvas-bg: #F8F5F0;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Nunito", system-ui, sans-serif;
+  background-color: #F8F5F0;
+  color: #1E293B;
+  -webkit-font-smoothing: antialiased;
+}
