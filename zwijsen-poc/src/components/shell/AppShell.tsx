@@ -5,12 +5,15 @@ import EditorPanel from "./EditorPanel";
 import WelcomeScreen from "./WelcomeScreen";
 import ConceptPlaceholder from "../concepts/ConceptPlaceholder";
 import ConceptKaart from "../concepts/ConceptKaart";
+import SwipeKaarten from "../concepts/SwipeKaarten";
 import { concepts } from "../../data/concepts";
 
 function renderConcept(id: string) {
   switch (id) {
     case "concept-kaart":
       return <ConceptKaart />;
+    case "swipe-kaarten":
+      return <SwipeKaarten />;
     default: {
       const concept = concepts.find((c) => c.id === id);
       return concept ? <ConceptPlaceholder concept={concept} /> : null;
@@ -22,7 +25,7 @@ export default function AppShell() {
   const [activeId, setActiveId] = useState<string | null>(null);
 
   // ConceptKaart needs h-full without scroll, others need scroll
-  const isFullHeight = activeId === "concept-kaart";
+  const isFullHeight = activeId === "concept-kaart" || activeId === "swipe-kaarten";
 
   return (
     <div className="flex flex-col h-screen bg-canvas-bg overflow-hidden">
