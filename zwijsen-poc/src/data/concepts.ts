@@ -31,6 +31,7 @@ export interface Concept {
   didacticGoal: string;
 }
 
+/** Actieve concepten op welkomstscherm en topnav. */
 export const concepts: Concept[] = [
   {
     id: "concept-kaart",
@@ -77,6 +78,13 @@ export const concepts: Concept[] = [
     didacticGoal:
       "Kagan coöperatief leren: positieve wederzijdse afhankelijkheid en actieve woordproductie.",
   },
+];
+
+/**
+ * Tijdelijk gearchiveerd — niet op het dashboard.
+ * Heractiveren: items hieronder terug in `concepts` zetten.
+ */
+export const archivedConcepts: Concept[] = [
   {
     id: "woordenwereld",
     number: 4,

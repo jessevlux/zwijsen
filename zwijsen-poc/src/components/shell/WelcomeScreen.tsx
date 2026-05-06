@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { ArrowRight, ClipboardCheck } from "lucide-react";
 import { concepts, toneTokens } from "../../data/concepts";
 
 interface Props {
@@ -19,7 +18,7 @@ export default function WelcomeScreen({ onSelect }: Props) {
           <span className="text-white font-black text-4xl leading-none">Z</span>
         </div>
         <h1 className="text-4xl font-black text-text-primary leading-tight">
-          Zwijsen Interactief
+          Zwijsen POC
         </h1>
         <p className="mt-3 text-text-secondary text-lg max-w-md mx-auto leading-relaxed">
           Kies een concept om te verkennen. Elk scherm laat een andere manier
@@ -72,32 +71,6 @@ export default function WelcomeScreen({ onSelect }: Props) {
             </motion.button>
           );
         })}
-
-        <motion.div
-          initial={{ y: 24, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.08 * 5 }}
-          className="min-h-[160px] rounded-3xl p-6 bg-surface-muted border-2 border-border-strong flex flex-col justify-between shadow-[var(--shadow-card)] sm:col-span-2 lg:col-span-1"
-        >
-          <div>
-            <ClipboardCheck
-              className="h-9 w-9 text-text-primary shrink-0"
-              strokeWidth={2}
-              aria-hidden
-            />
-            <h3 className="font-black text-base mt-3 mb-1 text-text-primary">
-              Redacteursweergave
-            </h3>
-            <p className="text-xs text-text-secondary leading-relaxed">
-              Open het paneel rechts om AI-content te reviewen, definities aan
-              te passen en woorden goed te keuren.
-            </p>
-          </div>
-          <div className="mt-4 flex items-center gap-1.5 text-xs text-brand-orange font-bold">
-            <ArrowRight className="h-4 w-4 shrink-0" aria-hidden />
-            Klik op het pijltje rechts in beeld
-          </div>
-        </motion.div>
       </div>
     </div>
   );
