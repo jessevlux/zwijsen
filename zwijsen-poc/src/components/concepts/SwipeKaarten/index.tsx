@@ -2,10 +2,11 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUp } from "lucide-react";
 import { toneTokens } from "../../../data/concepts";
+import type { SwipeKaartenContent } from "../../../types/exerciseContent";
 import ConceptIntro from "../shared/ConceptIntro";
 import ConceptHeader from "../shared/ConceptHeader";
 import SwipeDeck from "./SwipeDeck";
-import { swipeAssignmentContext } from "./data";
+import { vloggenSwipeContent } from "./examples";
 import type { StepCfg } from "../shared/types";
 
 const { accentColor: ACCENT, accentSoft: ACCENT_BG } = toneTokens.warm;
@@ -16,15 +17,20 @@ const stepConfig: [StepCfg, StepCfg, StepCfg] = [
   { Icon: ArrowUp },
 ];
 
-const brief = {
-  themeLabel: swipeAssignmentContext.themeLabel,
-  title: swipeAssignmentContext.title,
-  situation: swipeAssignmentContext.situation,
-  question: swipeAssignmentContext.question,
-  steps: swipeAssignmentContext.steps,
-} as const;
+export interface SwipeKaartenProps {
+  content?: SwipeKaartenContent;
+}
 
-export default function SwipeKaarten() {
+export default function SwipeKaarten({ content }: SwipeKaartenProps) {
+  const resolved = content ?? vloggenSwipeContent;
+  const brief = {
+    themeLabel: resolved.brief.themeLabel,
+    title: resolved.brief.title,
+    situation: resolved.brief.situation,
+    question: resolved.brief.question,
+    steps: resolved.brief.steps,
+  } as const;
+
   const [started, setStarted] = useState(false);
 
   return (
@@ -56,7 +62,7 @@ export default function SwipeKaarten() {
               headerBg={ACCENT_BG}
               borderColor="var(--color-border-subtle)"
             />
-            <SwipeDeck />
+            <SwipeDeck cards={resolved.cards} />
           </motion.div>
         )}
       </AnimatePresence>

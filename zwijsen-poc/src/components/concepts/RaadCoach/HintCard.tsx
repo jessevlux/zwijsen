@@ -1,4 +1,4 @@
-import { maskWordInContext } from "./data";
+import { maskWordInContext } from "./raadCoachLogic";
 
 interface HintCardProps {
   category: string;

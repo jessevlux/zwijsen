@@ -1,30 +1,13 @@
-export type Choice = { word: string; isCorrect: boolean };
+import type { ConceptBrief } from "../shared/types";
+import type { SwipeKaartenContent } from "../../../types/exerciseContent";
+import type { SwipeCardData } from "../../../types/content";
 
-export interface SwipeCardData {
-  id: string;
-  /** Gebruik "____" als gat in de zin */
-  prompt: string;
-  left: Choice;
-  right: Choice;
-  /** Korte uitleg na een goede keuze (optioneel tonen) */
-  explanation: string;
-}
-
-export interface SwipeAssignmentContext {
-  title: string;
-  themeLabel: string;
-  situation: string;
-  question: string;
-  steps: [string, string, string];
-}
-
-export const swipeAssignmentContext: SwipeAssignmentContext = {
+export const vloggenSwipeBrief: ConceptBrief = {
   title: "Swipe-kaarten — Vloggen",
   themeLabel: "Groep 8 · Taal · Thema: Vloggen",
   situation:
     "Sleep de kaart naar links of rechts om het woord te kiezen dat in de zin past. Omhoog = even lastig, dan komt de kaart later nog een keer terug.",
-  question:
-    "Welk woord past in de zin? Kies met een swipe of met de knoppen onderaan.",
+  question: "Welk woord past in de zin? Kies met een swipe of met de knoppen onderaan.",
   steps: [
     "Lees de zin met het gat. Links en rechts staan twee woorden.",
     "Sleep de kaart naar het woord dat past — of tik op de knop eronder.",
@@ -32,7 +15,7 @@ export const swipeAssignmentContext: SwipeAssignmentContext = {
   ],
 };
 
-export const initialSwipeDeck: SwipeCardData[] = [
+export const vloggenSwipeCards: SwipeCardData[] = [
   {
     id: "s1",
     prompt: "De finale van gisteren was echt ____!",
@@ -76,3 +59,9 @@ export const initialSwipeDeck: SwipeCardData[] = [
     explanation: "Het beeld = wat de kijker in één shot te zien krijgt.",
   },
 ];
+
+export const vloggenSwipeContent: SwipeKaartenContent = {
+  type: "swipe-kaarten",
+  brief: vloggenSwipeBrief,
+  cards: vloggenSwipeCards,
+};

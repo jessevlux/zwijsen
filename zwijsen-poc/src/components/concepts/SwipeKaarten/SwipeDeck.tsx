@@ -1,13 +1,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Flame } from "lucide-react";
-import type { SwipeCardData } from "./data";
-import { initialSwipeDeck } from "./data";
+import type { SwipeCardData } from "../../../types/content";
+import { vloggenSwipeCards } from "./examples";
 import ActionButtons from "./ActionButtons";
 import DonePanel from "./DonePanel";
 import { SwipeCard, type SwipeCardRef, type SwipeDirection } from "./SwipeCard";
 
-const INITIAL_TOTAL = initialSwipeDeck.length;
+interface SwipeDeckProps {
+  /** Standaard: Vloggen-voorbeeld uit examples. */
+  cards?: SwipeCardData[];
+}
 
 function applySwipeDeck(
   prev: SwipeCardData[],
@@ -26,8 +29,11 @@ function applySwipeDeck(
   return { next: [...rest.slice(0, i), top, ...rest.slice(i)], didCorrect: false };
 }
 
-export default function SwipeDeck() {
-  const [deck, setDeck] = useState<SwipeCardData[]>(() => [...initialSwipeDeck]);
+export default function SwipeDeck({ cards: cardsProp }: SwipeDeckProps) {
+  const sourceCards = cardsProp ?? vloggenSwipeCards;
+  const initialTotal = sourceCards.length;
+
+  const [deck, setDeck] = useState<SwipeCardData[]>(() => [...sourceCards]);
   const [correctCount, setCorrectCount] = useState(0);
   const [attemptCount, setAttemptCount] = useState(0);
   const [streak, setStreak] = useState(0);
@@ -42,8 +48,8 @@ export default function SwipeDeck() {
 
   const progressPct = useMemo(() => {
     if (done) return 100;
-    return Math.min(100, (correctCount / INITIAL_TOTAL) * 100);
-  }, [correctCount, done]);
+    return Math.min(100, (correctCount / initialTotal) * 100);
+  }, [correctCount, done, initialTotal]);
 
   useEffect(() => {
     return () => {
@@ -97,7 +103,7 @@ export default function SwipeDeck() {
   );
 
   const restart = useCallback(() => {
-    setDeck([...initialSwipeDeck]);
+    setDeck([...sourceCards]);
     setCorrectCount(0);
     setAttemptCount(0);
     setStreak(0);
@@ -105,7 +111,7 @@ export default function SwipeDeck() {
     setLaterFeedback(false);
     if (feedbackTimerRef.current) clearTimeout(feedbackTimerRef.current);
     setBusy(false);
-  }, []);
+  }, [sourceCards]);
 
   return (
     <div className="relative flex min-h-0 flex-1 flex-col items-center gap-3 overflow-y-auto px-4 pb-4 pt-3 sm:gap-4">

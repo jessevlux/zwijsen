@@ -11,25 +11,26 @@ import {
   CONTEXT_HINT_COST,
   isGuessCorrect,
   LETTER_HINT_COST,
-  raadCoachWords,
   ROUND_START_SCORE,
   STREAK_BONUS,
   STREAK_BONUS_AT,
   WRONG_GUESS_PENALTY,
-} from "./data";
+} from "./raadCoachLogic";
+import type { RaadCoachWord } from "../../../types/content";
 
 interface RaadCoachGameProps {
   accentColor: string;
+  words: RaadCoachWord[];
 }
 
-export default function RaadCoachGame({ accentColor }: RaadCoachGameProps) {
-  const totalRounds = raadCoachWords.length;
+export default function RaadCoachGame({ accentColor, words }: RaadCoachGameProps) {
+  const totalRounds = words.length;
   const [wordIndex, setWordIndex] = useState(0);
   const isDone = wordIndex >= totalRounds;
-  const current = raadCoachWords[Math.min(wordIndex, totalRounds - 1)];
+  const current = words[Math.min(wordIndex, totalRounds - 1)];
 
   const [guess, setGuess] = useState("");
-  const [revealed, setRevealed] = useState<boolean[]>(() => [...raadCoachWords[0].word].map(() => false));
+  const [revealed, setRevealed] = useState<boolean[]>(() => [...words[0].word].map(() => false));
   const [contextShown, setContextShown] = useState(false);
   const [surrendered, setSurrendered] = useState(false);
   const [letterHintClicks, setLetterHintClicks] = useState(0);
@@ -46,17 +47,20 @@ export default function RaadCoachGame({ accentColor }: RaadCoachGameProps) {
   const [successNonce, setSuccessNonce] = useState(0);
   const advanceGuard = useRef(false);
 
-  const resetRoundStateForIndex = useCallback((idx: number) => {
-    if (idx >= totalRounds) return;
-    const w = raadCoachWords[idx];
-    setGuess("");
-    setRevealed([...w.word].map(() => false));
-    setContextShown(false);
-    setSurrendered(false);
-    setLetterHintClicks(0);
-    setScoreThisRound(ROUND_START_SCORE);
-    setSuccessNonce(0);
-  }, [totalRounds]);
+  const resetRoundStateForIndex = useCallback(
+    (idx: number) => {
+      if (idx >= totalRounds) return;
+      const w = words[idx];
+      setGuess("");
+      setRevealed([...w.word].map(() => false));
+      setContextShown(false);
+      setSurrendered(false);
+      setLetterHintClicks(0);
+      setScoreThisRound(ROUND_START_SCORE);
+      setSuccessNonce(0);
+    },
+    [totalRounds, words],
+  );
 
   const allRevealed = useMemo(() => revealed.length > 0 && revealed.every(Boolean), [revealed]);
 

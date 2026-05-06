@@ -1,5 +1,10 @@
 import AppShell from "./components/shell/AppShell";
+import { LibraryProvider } from "./state/LibraryContext";
 
 export default function App() {
-  return <AppShell />;
+  return (
+    <LibraryProvider>
+      <AppShell />
+    </LibraryProvider>
+  );
 }

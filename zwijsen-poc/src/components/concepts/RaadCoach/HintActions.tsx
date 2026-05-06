@@ -1,4 +1,4 @@
-import { CONTEXT_HINT_COST, LETTER_HINT_COST } from "./data";
+import { CONTEXT_HINT_COST, LETTER_HINT_COST } from "./raadCoachLogic";
 
 interface HintActionsProps {
   onLetter: () => void;

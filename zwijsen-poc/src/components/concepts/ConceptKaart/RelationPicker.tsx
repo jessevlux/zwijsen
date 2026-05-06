@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
-import type { Relation } from "./data";
-import { relations } from "./data";
+import type { Relation } from "../../../types/content";
+import { relations } from "./relationConfig";
 
 interface Props {
   position: { x: number; y: number };

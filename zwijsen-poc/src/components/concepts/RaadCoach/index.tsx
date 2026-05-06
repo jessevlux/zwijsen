@@ -2,11 +2,12 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Keyboard, Lightbulb, Trophy } from "lucide-react";
 import { toneTokens } from "../../../data/concepts";
+import type { RaadCoachContent } from "../../../types/exerciseContent";
 import ConceptIntro from "../shared/ConceptIntro";
 import ConceptHeader from "../shared/ConceptHeader";
 import type { StepCfg } from "../shared/types";
 import RaadCoachGame from "./RaadCoachGame";
-import { raadCoachAssignmentContext } from "./data";
+import { vloggenRaadCoachContent } from "./examples";
 
 const { accentColor: ACCENT, accentSoft: ACCENT_BG } = toneTokens.success;
 
@@ -16,15 +17,20 @@ const stepConfig: [StepCfg, StepCfg, StepCfg] = [
   { Icon: Trophy },
 ];
 
-const brief = {
-  themeLabel: raadCoachAssignmentContext.themeLabel,
-  title: raadCoachAssignmentContext.title,
-  situation: raadCoachAssignmentContext.situation,
-  question: raadCoachAssignmentContext.question,
-  steps: raadCoachAssignmentContext.steps,
-} as const;
+export interface RaadCoachProps {
+  content?: RaadCoachContent;
+}
 
-export default function RaadCoach() {
+export default function RaadCoach({ content }: RaadCoachProps) {
+  const resolved = content ?? vloggenRaadCoachContent;
+  const brief = {
+    themeLabel: resolved.brief.themeLabel,
+    title: resolved.brief.title,
+    situation: resolved.brief.situation,
+    question: resolved.brief.question,
+    steps: resolved.brief.steps,
+  } as const;
+
   const [started, setStarted] = useState(false);
 
   return (
@@ -56,7 +62,7 @@ export default function RaadCoach() {
               headerBg={ACCENT_BG}
               borderColor="var(--color-border-subtle)"
             />
-            <RaadCoachGame accentColor={ACCENT} />
+            <RaadCoachGame accentColor={ACCENT} words={resolved.words} />
           </motion.div>
         )}
       </AnimatePresence>

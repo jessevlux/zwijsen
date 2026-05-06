@@ -2,11 +2,12 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Lightbulb, Link2, MousePointerClick } from "lucide-react";
 import { toneTokens } from "../../../data/concepts";
+import type { ConceptKaartContent } from "../../../types/exerciseContent";
 import ConceptIntro from "../shared/ConceptIntro";
 import ConceptHeader from "../shared/ConceptHeader";
 import InventoryPanel from "./InventoryPanel";
 import SemanticCanvas from "./SemanticCanvas";
-import { assignmentContext, inventoryCategories, inventoryWords } from "./data";
+import { vloggenConceptKaartContent } from "./examples";
 import type { StepCfg } from "../shared/types";
 
 const { accentColor: ACCENT, accentSoft: ACCENT_BG } = toneTokens.info;
@@ -17,15 +18,21 @@ const stepConfig: [StepCfg, StepCfg, StepCfg] = [
   { Icon: Lightbulb },
 ];
 
-const brief = {
-  themeLabel: assignmentContext.themeLabel,
-  title: assignmentContext.title,
-  situation: assignmentContext.situation,
-  question: assignmentContext.question,
-  steps: assignmentContext.steps,
-} as const;
+export interface ConceptKaartProps {
+  /** Standaard: Vloggen-voorbeeld. */
+  content?: ConceptKaartContent;
+}
 
-export default function ConceptKaart() {
+export default function ConceptKaart({ content }: ConceptKaartProps) {
+  const c = content ?? vloggenConceptKaartContent;
+  const brief = {
+    themeLabel: c.brief.themeLabel,
+    title: c.brief.title,
+    situation: c.brief.situation,
+    question: c.brief.question,
+    steps: c.brief.steps,
+  } as const;
+
   const [started, setStarted] = useState(false);
   const [usedWordIds, setUsedWordIds] = useState<Set<string>>(new Set());
 
@@ -50,11 +57,10 @@ export default function ConceptKaart() {
             transition={{ duration: 0.22 }}
             className="flex h-full min-h-0 flex-col overflow-hidden"
           >
-            {/* Compacte header + opdrachten canvas */}
             <div className="flex min-h-0 flex-1 overflow-hidden">
               <InventoryPanel
-                categories={inventoryCategories}
-                words={inventoryWords}
+                categories={c.categories}
+                words={c.words}
                 usedWordIds={usedWordIds}
               />
               <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
@@ -65,7 +71,7 @@ export default function ConceptKaart() {
                   headerBg="#fff"
                   borderColor="var(--color-border-subtle)"
                 />
-                <SemanticCanvas onUsedWordsChange={setUsedWordIds} />
+                <SemanticCanvas onUsedWordsChange={setUsedWordIds} correctPairs={c.pairs} />
               </div>
             </div>
           </motion.div>

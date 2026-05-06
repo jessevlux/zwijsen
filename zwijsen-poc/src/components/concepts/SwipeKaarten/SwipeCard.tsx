@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 import { motion, useAnimationControls } from "framer-motion";
-import type { SwipeCardData } from "./data";
+import type { SwipeCardData } from "../../../types/content";
 
 const SWIPE_THRESHOLD = 100;
 const UP_DOMINANCE = 1.15;

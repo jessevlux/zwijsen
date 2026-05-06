@@ -1,41 +1,8 @@
-import type { LucideIcon } from "lucide-react";
-import { ArrowLeftRight, Boxes, Lightbulb, Link2 } from "lucide-react";
+import type { ConceptBrief } from "../shared/types";
+import type { ConceptKaartContent } from "../../../types/exerciseContent";
+import type { CorrectPair, InventoryCategory, InventoryWord } from "../../../types/content";
 
-export type Relation = "synoniem" | "tegenstelling" | "onderdeel van" | "voorbeeld van";
-
-export interface InventoryCategory {
-  id: string;
-  title: string;
-  subtitle: string;
-}
-
-export interface InventoryWord {
-  id: string;
-  word: string;
-  /** Korte betekenis — zichtbaar als je het woord op het canvas aanwijst (aanwijs/hover) */
-  hint: string;
-  /** Lange uitleg in vlog-/recensie-context — alleen via vraagteken op het canvas */
-  contextSentence: string;
-  categoryId: string;
-}
-
-export interface AssignmentContext {
-  title: string;
-  themeLabel: string;
-  situation: string;
-  question: string;
-  steps: [string, string, string];
-}
-
-export interface CorrectPair {
-  word1: string;
-  word2: string;
-  relation: Relation;
-  /** Accept both directions */
-  bidirectional?: boolean;
-}
-
-export const assignmentContext: AssignmentContext = {
+export const vloggenConceptKaartBrief: ConceptBrief = {
   title: "Woordweb voor je vlog-recensie",
   themeLabel: "Groep 8 · Taal · Thema: Vloggen",
   situation:
@@ -49,39 +16,13 @@ export const assignmentContext: AssignmentContext = {
   ],
 };
 
-/** Woorden groeperen: oordeel / toon / beeld — minder “losse woordenlijst” */
-export const inventoryCategories: InventoryCategory[] = [
-  {
-    id: "oordeel",
-    title: "Wat vind je?",
-    subtitle: "Je mening over iets",
-  },
-  {
-    id: "toon",
-    title: "Hoe voelt het?",
-    subtitle: "Sfeer van je verhaal",
-  },
-  {
-    id: "beeld",
-    title: "Wat maak je?",
-    subtitle: "Techniek op het scherm",
-  },
+export const vloggenInventoryCategories: InventoryCategory[] = [
+  { id: "oordeel", title: "Wat vind je?", subtitle: "Je mening over iets" },
+  { id: "toon", title: "Hoe voelt het?", subtitle: "Sfeer van je verhaal" },
+  { id: "beeld", title: "Wat maak je?", subtitle: "Techniek op het scherm" },
 ];
 
-export const relations: {
-  value: Relation;
-  label: string;
-  Icon: LucideIcon;
-  color: string;
-}[] = [
-  { value: "synoniem", label: "Synoniem", Icon: Link2, color: "#4299E1" },
-  { value: "tegenstelling", label: "Tegenstelling", Icon: ArrowLeftRight, color: "#F56565" },
-  { value: "onderdeel van", label: "Onderdeel van", Icon: Boxes, color: "#D69E2E" },
-  { value: "voorbeeld van", label: "Voorbeeld van", Icon: Lightbulb, color: "#48BB78" },
-];
-
-/** Woordenschat Groep 8 — Taal Jacht — Thema: Vloggen */
-export const inventoryWords: InventoryWord[] = [
+export const vloggenInventoryWords: InventoryWord[] = [
   {
     id: "recensie",
     word: "recensie",
@@ -148,11 +89,7 @@ export const inventoryWords: InventoryWord[] = [
   },
 ];
 
-/**
- * Elk relatietype komt precies één keer voor. Alle acht woorden zitten in precies één goed paar.
- * Bij bidirectional: beide verbindingsrichtingen zijn goed.
- */
-export const correctPairs: CorrectPair[] = [
+export const vloggenCorrectPairs: CorrectPair[] = [
   {
     word1: "spectaculair",
     word2: "opzienbarend",
@@ -179,19 +116,10 @@ export const correctPairs: CorrectPair[] = [
   },
 ];
 
-export function validateConnection(
-  word1: string,
-  word2: string,
-  relation: Relation
-): boolean {
-  return correctPairs.some((pair) => {
-    const directMatch =
-      pair.word1 === word1 && pair.word2 === word2 && pair.relation === relation;
-    const reverseMatch =
-      pair.bidirectional &&
-      pair.word1 === word2 &&
-      pair.word2 === word1 &&
-      pair.relation === relation;
-    return directMatch || reverseMatch;
-  });
-}
+export const vloggenConceptKaartContent: ConceptKaartContent = {
+  type: "concept-kaart",
+  brief: vloggenConceptKaartBrief,
+  categories: vloggenInventoryCategories,
+  words: vloggenInventoryWords,
+  pairs: vloggenCorrectPairs,
+};

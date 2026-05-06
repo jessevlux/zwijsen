@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import type { InventoryCategory, InventoryWord } from "./data";
+import type { InventoryCategory, InventoryWord } from "../../../types/content";
 
 interface Props {
   categories: InventoryCategory[];

@@ -22,8 +22,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Network } from "lucide-react";
 import WordNode from "./WordNode";
 import RelationPicker from "./RelationPicker";
-import type { Relation } from "./data";
-import { validateConnection, relations } from "./data";
+import type { CorrectPair, Relation } from "../../../types/content";
+import { relations } from "./relationConfig";
+import { validateConnection } from "./validateConnection";
 
 const nodeTypes: NodeTypes = { word: WordNode };
 
@@ -119,8 +120,10 @@ const edgeTypes = { relation: RelationEdge };
 
 function CanvasInner({
   onUsedWordsChange,
+  correctPairs,
 }: {
   onUsedWordsChange: (ids: Set<string>) => void;
+  correctPairs: CorrectPair[];
 }) {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const { screenToFlowPosition } = useReactFlow();
@@ -248,7 +251,7 @@ function CanvasInner({
     if (!pendingConnection) return;
 
     const { source, target, sourceWord, targetWord } = pendingConnection;
-    const isCorrect = validateConnection(sourceWord, targetWord, relation);
+    const isCorrect = validateConnection(sourceWord, targetWord, relation, correctPairs);
 
     const rel = relations.find((r) => r.value === relation)!;
     const edgeId = `edge-${source}-${target}-${Date.now()}`;
@@ -392,12 +395,14 @@ function CanvasInner({
 // Wrap in provider so useReactFlow works
 export default function SemanticCanvas({
   onUsedWordsChange,
+  correctPairs,
 }: {
   onUsedWordsChange: (ids: Set<string>) => void;
+  correctPairs: CorrectPair[];
 }) {
   return (
     <ReactFlowProvider>
-      <CanvasInner onUsedWordsChange={onUsedWordsChange} />
+      <CanvasInner onUsedWordsChange={onUsedWordsChange} correctPairs={correctPairs} />
     </ReactFlowProvider>
   );
 }
