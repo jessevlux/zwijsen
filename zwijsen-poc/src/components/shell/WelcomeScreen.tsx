@@ -30,14 +30,19 @@ export default function WelcomeScreen({
         <h1 className="text-4xl font-black leading-tight text-text-primary">Zwijsen POC</h1>
         {studentMode ? (
           <p className="mx-auto mt-3 max-w-md text-lg leading-relaxed text-text-secondary">
-            Kies hieronder een oefening om te starten.
+            Tik op een kaart en oefen met taal — zo simpel mogelijk, zodat je snel aan de slag kunt.
           </p>
         ) : (
           <>
             <p className="mx-auto mt-3 max-w-md text-lg leading-relaxed text-text-secondary">
-              Werkboek-bibliotheek en import. Voorbeeldoefeningen vind je via{" "}
-              <span className="font-bold text-text-primary">Leerling</span> (rechtsboven). Import en AI zijn nog concept —
-              zie <code className="rounded bg-surface-muted px-1 text-sm">HANDOVER.md</code>.
+              Het eindproduct richt zich op <span className="font-bold text-text-primary">leerlingen</span>: een
+              aparte webpagina waar zij werkboek-oefeningen en interactieve oefeningen kunnen doen. Hier beheer je
+              werkboeken en een <span className="font-bold text-text-primary">begeleide import</span> (geen
+              volledig automatische PDF-conversie — controle blijft nodig). Technische details:{" "}
+              <code className="rounded bg-surface-muted px-1 text-sm">HANDOVER.md</code>.
+            </p>
+            <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-text-muted">
+              Data uit import moet herleidbaar blijven: vraag, antwoord en brontekst — dat model sluit hierop aan.
             </p>
 
             <div className="mx-auto mt-6 flex w-full max-w-md flex-col gap-3 sm:flex-row sm:justify-center">

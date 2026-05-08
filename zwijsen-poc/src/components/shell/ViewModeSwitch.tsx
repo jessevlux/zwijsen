@@ -13,7 +13,7 @@ export default function ViewModeSwitch({ mode, onChange }: Props) {
     <div
       className="flex shrink-0 items-center gap-1 rounded-2xl border border-border-subtle bg-surface-muted/60 p-1"
       role="group"
-      aria-label="Weergave"
+      aria-label="Leerling (standaard) of redacteur"
     >
       <button
         type="button"

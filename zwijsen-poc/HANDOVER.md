@@ -2,6 +2,21 @@
 
 Korte gids voor de volgende iteratie van het team. Alles draait om **frontend userflow**; er is **geen API** en **geen database**. `LibraryProvider` gebruikt optioneel **`localStorage`** (`zwijsen.library.workbooks.v1`) — zie `TODO(handover)` in [`src/state/LibraryContext.tsx`](src/state/LibraryContext.tsx).
 
+## Klantfeedback (sprint review) — nu vs later
+
+**Nu verwerkt in productrichting en copy**
+
+- **Leerling-focus:** standaardmodus bij openen is **Leerling**; redacteur is secundair (schakelaar rechtsboven).
+- **Einddoel:** stand-alone webpagina voor leerlingen — beschreven in README en welkomstscherm (redacteur).
+- **Import:** expliciet **begeleid / semi-automatisch** — geen belofte van volledig automatische, foutloze PDF-import; uitleg in import-header en navigatie-tooltips.
+- **Data:** herleidbaarheid vraag / antwoord / brontekst benadrukt in docs en import-copy (sluit aan op `workbook` / `exercise` types).
+
+**Later (bewust niet nu najagen)**
+
+- Volledige automatische PDF-parser zonder menselijke stap.
+- Grote visuele redesign op basis van **brand guide** (wacht op aanlevering).
+- Backend + AI-pipeline (blijven als TODO hieronder).
+
 ## Snelstart
 
 ```bash
@@ -10,9 +25,10 @@ npm install
 npm run dev
 ```
 
-- **Start**: welkomstscherm met CTA’s Bibliotheek + Importeren + drie demo-oefeningen.
+- **Start (Leerling)**: welkomstscherm met drie interactieve demo-oefeningen (conceptkaart / swipe / raad & coach).
+- **Start (Redacteur)**: zelfde app met CTA’s Bibliotheek + Importeren; uitleg leerling-product en begeleide import.
 - **Bibliotheek**: voorbeeld-werkboek *Taaljacht — Groep 8 — Vloggen* met drie opdrachten die echte content hebben.
-- **Importeren**: 3-staps wizard; PDF wordt **niet** geparsed; opdrachten zijn **leeg** (geen dummy-inhoud).
+- **Importeren**: 3-staps wizard; PDF wordt **niet** geparsed; opdrachten zijn **leeg** (geen dummy-inhoud). Kopie in de wizard benadrukt **semi-automatische** import en gestructureerde output.
 
 ## Architectuur (routes)
 
@@ -49,6 +65,8 @@ flowchart LR
 - **Content per oefening (discriminated union)**: [`src/types/exerciseContent.ts`](src/types/exerciseContent.ts)
 - **Woorden / kaarten / relaties (gedeeld)**: [`src/types/content.ts`](src/types/content.ts)
 
+Digitale output van geïmporteerde werkboeken moet **herleidbaar** blijven in onderdelen zoals **vraag**, **antwoord** en **geclassificeerde brontekst** — het huidige model is daarop ingericht (`Exercise`, `SourceText`, `ExerciseContent`); verfijn mapping zodra er echte parse-output is.
+
 Requirements uit `kennis/Requirements op basis van de analyses.pdf` zijn vertaald naar **vraagtypes** op `ExerciseType` + placeholders (geen implementatie).
 
 ## Generieke oefeningen (recept)
@@ -75,6 +93,7 @@ De drie uitgewerkte oefeningen accepteren **optionele content-props**; default =
 
 ### PDF / import
 
+- [ ] Houd import **begeleid**: parser + **reviewstap** voor redacteur (geen doel van 100% hands-off automatisering — werkboeken zijn visueel complex).
 - [ ] Echte PDF-upload + parser → vul `Exercise.content` en `SourceText.body`.
 - [ ] Brontekst **altijd meesturen** met opdracht (zie requirements-PDF).
 - [ ] Twee boekdelen: `leskant` vs `taakboekje` al in model; UI voor scheiding uitbreiden.

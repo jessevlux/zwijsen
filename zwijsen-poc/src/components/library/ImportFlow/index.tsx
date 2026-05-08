@@ -51,9 +51,15 @@ export default function ImportFlow({ onCancel, onComplete }: ImportFlowProps) {
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden bg-surface-base">
       <header className="shrink-0 border-b border-border-subtle bg-surface-card px-4 py-3">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-2">
-          <h1 className="text-base font-black text-text-primary">Werkboek importeren</h1>
-          <button type="button" onClick={onCancel} className="text-xs font-bold text-text-muted hover:text-text-primary">
+        <div className="mx-auto flex max-w-5xl flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-base font-black text-text-primary">Werkboek importeren</h1>
+            <p className="mt-1 max-w-2xl text-xs leading-relaxed text-text-muted">
+              Begeleide import: werkboeken zijn visueel complex — we streven niet naar foutloze volledige automatisering;
+              redactie en controle blijven nodig. Output wordt gestructureerd (o.a. vraag, antwoord, brontekst).
+            </p>
+          </div>
+          <button type="button" onClick={onCancel} className="shrink-0 text-xs font-bold text-text-muted hover:text-text-primary">
             Annuleren
           </button>
         </div>

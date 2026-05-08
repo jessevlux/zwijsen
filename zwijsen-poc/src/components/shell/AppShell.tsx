@@ -32,7 +32,7 @@ function renderDemoConcept(id: string) {
 
 export default function AppShell() {
   const [view, setView] = useState<AppView>({ name: "welcome" });
-  const [viewMode, setViewMode] = useState<ViewMode>("editor");
+  const [viewMode, setViewMode] = useState<ViewMode>("student");
 
   const isFullHeight =
     (view.name === "demo" && isDemoFullHeight(view)) ||
