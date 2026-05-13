@@ -1,5 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import { Globe, Layers, Mic, Network, Users } from "lucide-react";
+import { zwijsenTokens as Z } from "../theme/zwijsenTokens";
 
 /** Visuele toon per concept: koppelt aan accentkleuren in het design system. */
 export type ConceptTone = "info" | "warm" | "success" | "violet" | "amber";
@@ -8,11 +9,11 @@ export const toneTokens: Record<
   ConceptTone,
   { accentColor: string; accentSoft: string }
 > = {
-  info: { accentColor: "#4299E1", accentSoft: "#E4F0FB" },
-  warm: { accentColor: "#FF6B00", accentSoft: "#FFF1E5" },
-  success: { accentColor: "#48BB78", accentSoft: "#E6F6EC" },
-  violet: { accentColor: "#805AD5", accentSoft: "#EDE9F7" },
-  amber: { accentColor: "#D69E2E", accentSoft: "#FAF5E8" },
+  info: { accentColor: Z.accentInfo, accentSoft: Z.accentInfoSoft },
+  warm: { accentColor: Z.brandOrange, accentSoft: Z.brandOrangeSoft },
+  success: { accentColor: Z.accentSuccess, accentSoft: Z.accentSuccessSoft },
+  violet: { accentColor: Z.accentViolet, accentSoft: Z.accentVioletSoft },
+  amber: { accentColor: Z.accentAmber, accentSoft: Z.accentAmberSoft },
 };
 
 export interface Concept {

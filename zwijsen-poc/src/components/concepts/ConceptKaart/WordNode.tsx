@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Handle, Position } from "@xyflow/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, HelpCircle } from "lucide-react";
+import { zwijsenTokens as Z } from "../../../theme/zwijsenTokens";
 
 export type NodeStatus = "idle" | "connected" | "correct" | "wrong";
 
@@ -40,17 +41,17 @@ export default function WordNode({
   }, [infoOpen]);
 
   const borderColor: Record<NodeStatus, string> = {
-    idle: "#E8E8EA",
-    connected: "#63B3ED",
-    correct: "#48BB78",
-    wrong: "#F56565",
+    idle: Z.nodeBorderIdle,
+    connected: Z.nodeBorderConnected,
+    correct: Z.nodeBorderCorrect,
+    wrong: Z.nodeBorderWrong,
   };
 
   const bgColor: Record<NodeStatus, string> = {
-    idle: "#FFFFFF",
-    connected: "#E4F0FB",
-    correct: "#E6F6EC",
-    wrong: "#FCE6E6",
+    idle: Z.nodeBgIdle,
+    connected: Z.nodeBgConnected,
+    correct: Z.nodeBgCorrect,
+    wrong: Z.nodeBgWrong,
   };
 
   return (
@@ -66,7 +67,7 @@ export default function WordNode({
         type="source"
         position={Position.Left}
         id="left"
-        className="!w-4 !h-4 !border-2 !border-[#4299E1] !bg-white !rounded-full transition-opacity duration-150"
+        className="!w-4 !h-4 !border-2 !border-accent-info !bg-white !rounded-full transition-opacity duration-150"
         style={{ opacity: hovered ? 1 : 0, cursor: "crosshair" }}
       />
 
@@ -80,12 +81,12 @@ export default function WordNode({
         }}
       >
         <div className="flex items-center gap-1">
-          <p className="font-black text-sm text-slate-800 leading-tight text-center flex-1 min-w-0 truncate px-0.5">
+          <p className="font-black text-sm text-text-primary leading-tight text-center flex-1 min-w-0 truncate px-0.5">
             {data.word}
           </p>
           <button
             type="button"
-            className="nodrag nopan flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-slate-100 hover:text-[#4299E1] cursor-pointer"
+            className="nodrag nopan flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-text-muted transition-colors hover:bg-surface-muted hover:text-accent-info cursor-pointer"
             aria-expanded={infoOpen}
             aria-label={`Meer uitleg bij ${data.word}`}
             title="Meer uitleg (context)"
@@ -106,7 +107,7 @@ export default function WordNode({
               initial={{ opacity: 0, height: 0, marginTop: 0 }}
               animate={{ opacity: 1, height: "auto", marginTop: 6 }}
               exit={{ opacity: 0, height: 0, marginTop: 0 }}
-              className="text-[10px] text-slate-500 text-center leading-snug overflow-hidden px-0.5"
+              className="text-[10px] text-text-secondary text-center leading-snug overflow-hidden px-0.5"
             >
               {data.hint}
             </motion.p>
@@ -122,10 +123,10 @@ export default function WordNode({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 4, scale: 0.96 }}
             transition={{ duration: 0.15 }}
-            className="nodrag nopan absolute left-1/2 top-full z-20 mt-1 w-[min(16rem,calc(100vw-2rem))] -translate-x-1/2 rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-left shadow-lg"
+            className="nodrag nopan absolute left-1/2 top-full z-20 mt-1 w-[min(16rem,calc(100vw-2rem))] -translate-x-1/2 rounded-2xl border border-border-subtle bg-white px-3 py-2.5 text-left shadow-lg"
             onPointerDown={(e) => e.stopPropagation()}
           >
-            <p className="text-[11px] text-slate-600 leading-snug">
+            <p className="text-[11px] text-text-secondary leading-snug">
               {data.contextSentence}
             </p>
           </motion.div>
@@ -142,7 +143,7 @@ export default function WordNode({
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
             onClick={() => data.onRemove(id)}
-            className="nodrag nopan absolute -top-2.5 -right-2.5 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-slate-700 text-white shadow transition-colors hover:bg-red-500 cursor-pointer"
+            className="nodrag nopan absolute -top-2.5 -right-2.5 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-border-strong text-white shadow transition-colors hover:bg-accent-danger cursor-pointer"
             title="Verwijder van canvas"
           >
             <X size={12} />
@@ -155,7 +156,7 @@ export default function WordNode({
         type="target"
         position={Position.Right}
         id="right"
-        className="!w-4 !h-4 !border-2 !border-[#4299E1] !bg-white !rounded-full transition-opacity duration-150"
+        className="!w-4 !h-4 !border-2 !border-accent-info !bg-white !rounded-full transition-opacity duration-150"
         style={{ opacity: hovered ? 1 : 0, cursor: "crosshair" }}
       />
     </motion.div>

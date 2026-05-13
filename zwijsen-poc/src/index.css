@@ -1,57 +1,97 @@
 @import "tailwindcss";
 
+/* Unit Rounded Pro — plaats .woff2 in public/fonts/ met deze namen (of pas url(...) aan). */
+@font-face {
+  font-family: "Unit Rounded Pro";
+  src: url("/fonts/unit-rounded-pro-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Unit Rounded Pro";
+  src: url("/fonts/unit-rounded-pro-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Unit Rounded Pro";
+  src: url("/fonts/unit-rounded-pro-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Unit Rounded Pro";
+  src: url("/fonts/unit-rounded-pro-bold-italic.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Unit Rounded Pro";
+  src: url("/fonts/unit-rounded-pro-bold.woff2") format("woff2");
+  font-weight: 800 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
-  /* Brand */
-  --color-brand-orange: #ff6b00;
-  --color-brand-orange-hover: #e55f00;
-  --color-brand-orange-soft: #fff1e5;
+  /* Brand (Zwijsen basispalet) */
+  --color-brand-orange: #eb5a0a;
+  --color-brand-orange-hover: #c85007;
+  --color-brand-orange-soft: #fff4e8;
 
   /* Surfaces & lines */
-  --color-surface-base: #fdfbf7;
+  --color-surface-base: #fffcf8;
   --color-surface-card: #ffffff;
-  --color-surface-muted: #f1f2f4;
+  --color-surface-muted: #f5f5f4;
   --color-border-subtle: #e8e8ea;
-  --color-border-strong: #2d3748;
+  --color-border-strong: #3c3c3c;
 
-  /* Typography */
-  --color-text-primary: #2d3748;
-  --color-text-secondary: #718096;
-  --color-text-muted: #a0aec0;
+  /* Typography — 90% zwart bodytekst */
+  --color-text-primary: #3c3c3c;
+  --color-text-secondary: #6b6b6b;
+  --color-text-muted: #949494;
   --color-text-inverted: #ffffff;
 
-  /* Accents (categorie + feedback) */
-  --color-accent-success: #48bb78;
-  --color-accent-success-soft: #e6f6ec;
-  --color-accent-info: #4299e1;
-  --color-accent-info-soft: #e4f0fb;
-  --color-accent-danger: #f56565;
-  --color-accent-danger-soft: #fce6e6;
-  --color-accent-amber: #d69e2e;
-  --color-accent-amber-soft: #faf5e8;
-  --color-accent-violet: #805ad5;
-  --color-accent-violet-soft: #ede9f7;
+  /* Accents */
+  --color-accent-success: #96c31e;
+  --color-accent-success-soft: #f2f7e5;
+  --color-accent-info: #00a0e1;
+  --color-accent-info-soft: #e5f5fc;
+  --color-accent-danger: #e10514;
+  --color-accent-danger-soft: #fce8e9;
+  --color-accent-amber: #ffce44;
+  --color-accent-amber-soft: #fff9e6;
+  --color-accent-violet: #961982;
+  --color-accent-violet-soft: #f5e8f3;
 
   /* Editor */
-  --color-editor-bg: #1f2733;
-  --color-editor-surface: #2a3441;
+  --color-editor-bg: #152535;
+  --color-editor-surface: #1f3348;
 
-  /* Shadows (use with shadow-[var(--shadow-card)] or extend) */
   --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05);
   --shadow-card-hover: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   margin: 0;
   padding: 0;
 }
 
 body {
-  font-family: "Nunito", system-ui, sans-serif;
+  font-family: "Unit Rounded Pro", Calibri, system-ui, sans-serif;
   background-color: var(--color-surface-base);
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;

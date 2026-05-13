@@ -23,14 +23,15 @@ import { Network } from "lucide-react";
 import WordNode from "./WordNode";
 import RelationPicker from "./RelationPicker";
 import type { CorrectPair, Relation } from "../../../types/content";
+import { zwijsenTokens as Z } from "../../../theme/zwijsenTokens";
 import { relations } from "./relationConfig";
 import { validateConnection } from "./validateConnection";
 
 const nodeTypes: NodeTypes = { word: WordNode };
 
 /** Standaard lijn / verbinding; fout-tijdelijke lijn gebruikt WRONG_EDGE_COLOR. */
-const CONNECT_COLOR = "#4299E1";
-const WRONG_EDGE_COLOR = "#F56565";
+const CONNECT_COLOR = Z.accentInfo;
+const WRONG_EDGE_COLOR = Z.accentDanger;
 
 interface PendingConnection {
   source: string;
@@ -316,7 +317,7 @@ function CanvasInner({
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-2.5 h-2.5 rounded-full bg-[#94A3B8]" />
+          <div className="w-2.5 h-2.5 rounded-full bg-text-muted" />
           <span className="text-xs text-slate-400">
             {nodes.length} woorden op canvas
           </span>
@@ -351,7 +352,7 @@ function CanvasInner({
           snapToGrid
           snapGrid={[16, 16]}
         >
-          <Background color="#E2E8F0" gap={24} size={1.5} />
+          <Background color={Z.canvasBackgroundGrid} gap={24} size={1.5} />
           <Controls showInteractive={false} />
 
           {/* Empty state overlay */}
