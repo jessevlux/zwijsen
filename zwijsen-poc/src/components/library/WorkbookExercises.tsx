@@ -2,7 +2,9 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useLibrary } from "../../state/LibraryContext";
 import AIGenerateDialog from "./AIGenerateDialog";
+import VariantSelector from "./VariantSelector";
 import type { Exercise } from "../../types/workbook";
+import type { ExerciseContent } from "../../types/exerciseContent";
 import { getExerciseVisualMeta } from "../../library/exerciseConceptMeta";
 
 interface WorkbookExercisesProps {
@@ -19,6 +21,7 @@ export default function WorkbookExercises({
   const { getWorkbook } = useLibrary();
   const wb = getWorkbook(workbookId);
   const [aiExercise, setAiExercise] = useState<Exercise | null>(null);
+  const [variantExercise, setVariantExercise] = useState<Exercise | null>(null);
 
   if (!wb) {
     return (
@@ -86,7 +89,11 @@ export default function WorkbookExercises({
                   whileTap={canOpen ? { scale: 0.98 } : undefined}
                   onClick={() => {
                     if (!canOpen) return;
-                    onOpenExercise(ex.id);
+                    if (ex.variants && ex.variants.length > 0) {
+                      setVariantExercise(ex);
+                    } else {
+                      onOpenExercise(ex.id);
+                    }
                   }}
                   className={`min-h-[160px] w-full rounded-3xl border border-border-subtle bg-surface-card p-6 text-left shadow-[var(--shadow-card)] transition-shadow ${
                     canOpen
@@ -179,6 +186,18 @@ export default function WorkbookExercises({
           onClose={() => setAiExercise(null)}
         />
       )}
+
+      <VariantSelector
+        open={!!variantExercise}
+        variants={variantExercise?.variants || []}
+        onSelect={(variant: ExerciseContent) => {
+          if (variantExercise) {
+            variantExercise.content = variant;
+            onOpenExercise(variantExercise.id);
+          }
+        }}
+        onClose={() => setVariantExercise(null)}
+      />
     </motion.div>
   );
 }

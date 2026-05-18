@@ -1,7 +1,6 @@
 import type { ConceptBrief } from "../components/concepts/shared/types";
 import type { CorrectPair, InventoryCategory, InventoryWord, RaadCoachWord, SwipeCardData } from "./content";
 
-/** Content voor de semantische conceptkaart-oefening. */
 export interface ConceptKaartContent {
   type: "concept-kaart";
   brief: ConceptBrief;
@@ -22,33 +21,66 @@ export interface RaadCoachContent {
   words: RaadCoachWord[];
 }
 
-/**
- * Placeholder branches — schema staat in HANDOVER.md.
- * Vervang door volledige interface + UI; zie recept in HANDOVER.
- */
+export interface MeerkeuzeContent {
+  type: "meerkeuze";
+  brief: ConceptBrief;
+  question: string;
+  options: { id: string; label: string }[];
+  correctOptionIds: string[];
+  allowMultiple: boolean;
+  explanation?: string;
+  sourceTextId?: string;
+}
 
-/** Zie HANDOVER.md → Opdrachttype: meerkeuze */
-export type MeerkeuzeContent = { type: "meerkeuze" };
+export interface InvullenZinContent {
+  type: "invullen-zin";
+  brief: ConceptBrief;
+  template: string;
+  blanks: {
+    id: string;
+    correctAnswers: string[];
+    caseSensitive?: boolean;
+    wordBank?: string[];
+  }[];
+  sourceTextId?: string;
+}
 
-/** Zie HANDOVER.md → Opdrachttype: koppelen-lijnen */
-export type KoppelenLijnenContent = { type: "koppelen-lijnen" };
+export interface KoppelenLijnenContent {
+  type: "koppelen-lijnen";
+  brief: ConceptBrief;
+  leftItems: { id: string; label: string }[];
+  rightItems: { id: string; label: string }[];
+  correctPairs: { leftId: string; rightId: string }[];
+  sourceTextId?: string;
+}
 
-/** Zie HANDOVER.md → Opdrachttype: invullen-zin */
-export type InvullenZinContent = { type: "invullen-zin" };
+export interface MarkerenContent {
+  type: "markeren";
+  brief: ConceptBrief;
+  instruction: string;
+  text: string;
+  correctSpans: { start: number; end: number }[];
+  sourceTextId?: string;
+}
 
-/** Zie HANDOVER.md — nog geen team-sectie; zie TypePlaceholder */
+export interface TabelInvullenContent {
+  type: "tabel-invullen";
+  brief: ConceptBrief;
+  columns: { id: string; header: string }[];
+  rows: {
+    id: string;
+    cells: {
+      columnId: string;
+      editable: boolean;
+      value?: string;
+      correctAnswers?: string[];
+    }[];
+  }[];
+  sourceTextId?: string;
+}
+
 export type OpenSchrijvenContent = { type: "open-schrijven" };
-
-/** Zie HANDOVER.md → Opdrachttype: markeren */
-export type MarkerenContent = { type: "markeren" };
-
-/** Zie HANDOVER.md → Opdrachttype: tabel-invullen */
-export type TabelInvullenContent = { type: "tabel-invullen" };
-
-/** Zie HANDOVER.md — nog geen team-sectie; zie TypePlaceholder */
 export type VolgordeNummerenContent = { type: "volgorde-nummeren" };
-
-/** Zie HANDOVER.md — content-type rubric (los van werkboek EmojiRubric) */
 export type RubricContent = { type: "rubric" };
 
 export type ExerciseContent =
@@ -56,10 +88,10 @@ export type ExerciseContent =
   | SwipeKaartenContent
   | RaadCoachContent
   | MeerkeuzeContent
-  | KoppelenLijnenContent
   | InvullenZinContent
-  | OpenSchrijvenContent
+  | KoppelenLijnenContent
   | MarkerenContent
   | TabelInvullenContent
+  | OpenSchrijvenContent
   | VolgordeNummerenContent
   | RubricContent;
