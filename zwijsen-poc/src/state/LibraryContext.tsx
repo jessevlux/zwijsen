@@ -26,23 +26,44 @@ function saveWorkbooksToStorage(workbooks: Workbook[]) {
   }
 }
 
-/** Oude localStorage zonder rubricGoals: vul aan zodat de rubric-stap niet wordt overgeslagen. */
+/** Oude localStorage: vul rubricGoals en ontbrekende seed-opdrachten/bronteksten aan. */
 function mergeStoredWorkbooks(stored: Workbook[]): Workbook[] {
   const seed = createVloggenExampleWorkbook();
-  const seedGoals = seed.rubricGoals;
-  if (!seedGoals?.length) return stored;
-
   let changed = false;
+
   const next = stored.map((wb) => {
-    if (
-      wb.id === EXAMPLE_VLOGGEN_WORKBOOK_ID &&
-      (!wb.rubricGoals || wb.rubricGoals.length === 0)
-    ) {
+    if (wb.id !== EXAMPLE_VLOGGEN_WORKBOOK_ID) return wb;
+
+    let workbook = wb;
+    const seedGoals = seed.rubricGoals;
+    if (seedGoals?.length && (!workbook.rubricGoals || workbook.rubricGoals.length === 0)) {
+      workbook = { ...workbook, rubricGoals: seedGoals };
       changed = true;
-      return { ...wb, rubricGoals: seedGoals };
     }
-    return wb;
+
+    const existingIds = new Set(workbook.exercises.map((e) => e.id));
+    const missingExercises = seed.exercises.filter((e) => !existingIds.has(e.id));
+    if (missingExercises.length > 0) {
+      workbook = {
+        ...workbook,
+        exercises: [...workbook.exercises, ...missingExercises],
+      };
+      changed = true;
+    }
+
+    const existingSourceIds = new Set(workbook.sources.map((s) => s.id));
+    const missingSources = seed.sources.filter((s) => !existingSourceIds.has(s.id));
+    if (missingSources.length > 0) {
+      workbook = {
+        ...workbook,
+        sources: [...workbook.sources, ...missingSources],
+      };
+      changed = true;
+    }
+
+    return workbook;
   });
+
   if (changed) {
     saveWorkbooksToStorage(next);
   }
