@@ -7,12 +7,18 @@ import ConceptKaart from "../concepts/ConceptKaart";
 import SwipeKaarten from "../concepts/SwipeKaarten";
 import RaadCoach from "../concepts/RaadCoach";
 import LibraryScreen from "../library/LibraryScreen";
-import WorkbookDetail from "../library/WorkbookDetail";
+import WorkbookIntro from "../library/WorkbookIntro";
+import WorkbookRubric from "../library/WorkbookRubric";
+import WorkbookExercises from "../library/WorkbookExercises";
 import ImportFlow from "../library/ImportFlow";
 import ExercisePlayer from "../library/ExercisePlayer";
 import { concepts } from "../../data/concepts";
-import type { AppView, ConceptId } from "./appView";
-import { isDemoFullHeight, isExercisePlayerFullHeight } from "./appView";
+import type { AppView } from "./appView";
+import {
+  isDemoFullHeight,
+  isExercisePlayerFullHeight,
+  isWorkbookContentFullHeight,
+} from "./appView";
 import type { ViewMode } from "./viewMode";
 
 function renderDemoConcept(id: string) {
@@ -39,21 +45,51 @@ export default function AppShell() {
     (view.name === "exercise" && isExercisePlayerFullHeight(view)) ||
     view.name === "import" ||
     view.name === "library" ||
-    view.name === "workbook";
+    isWorkbookContentFullHeight(view);
 
   const handleViewModeChange = useCallback((mode: ViewMode) => {
     setViewMode(mode);
     if (mode !== "student") return;
     setView((v) => {
-      if (v.name === "library" || v.name === "import" || v.name === "workbook") {
+      if (
+        v.name === "library" ||
+        v.name === "import" ||
+        v.name === "workbook-intro" ||
+        v.name === "workbook-rubric" ||
+        v.name === "workbook-exercises"
+      ) {
         return { name: "welcome" };
       }
-      if (v.name === "exercise" && v.returnToWorkbookId) {
+      if (v.name === "exercise") {
         return { name: "welcome" };
       }
       return v;
     });
   }, []);
+
+  const handleNavBack = useCallback(() => {
+    setView((v) => {
+      if (v.name === "workbook-exercises") {
+        return { name: "workbook-rubric", workbookId: v.workbookId };
+      }
+      if (v.name === "workbook-rubric") {
+        return { name: "workbook-intro", workbookId: v.workbookId };
+      }
+      if (v.name === "workbook-intro") {
+        return viewMode === "student"
+          ? { name: "welcome" }
+          : { name: "library" };
+      }
+      if (v.name === "exercise" && v.returnToWorkbookId) {
+        return { name: "workbook-exercises", workbookId: v.returnToWorkbookId };
+      }
+      return v;
+    });
+  }, [viewMode]);
+
+  function openWorkbookIntro(workbookId: string) {
+    setView({ name: "workbook-intro", workbookId });
+  }
 
   function renderMain() {
     switch (view.name) {
@@ -61,7 +97,7 @@ export default function AppShell() {
         return (
           <WelcomeScreen
             studentMode={viewMode === "student"}
-            onSelectDemo={(id) => setView({ name: "demo", conceptId: id as ConceptId })}
+            onOpenWorkbook={openWorkbookIntro}
             onOpenLibrary={() => setView({ name: "library" })}
             onOpenImport={() => setView({ name: "import" })}
           />
@@ -69,7 +105,7 @@ export default function AppShell() {
       case "library":
         return (
           <LibraryScreen
-            onOpenWorkbook={(id) => setView({ name: "workbook", workbookId: id })}
+            onOpenWorkbook={openWorkbookIntro}
             onImport={() => setView({ name: "import" })}
           />
         );
@@ -77,16 +113,46 @@ export default function AppShell() {
         return (
           <ImportFlow
             onCancel={() => setView({ name: "library" })}
-            onComplete={(workbookId) => setView({ name: "workbook", workbookId })}
+            onComplete={(workbookId) => openWorkbookIntro(workbookId)}
           />
         );
-      case "workbook":
+      case "workbook-intro":
         return (
-          <WorkbookDetail
+          <WorkbookIntro
             workbookId={view.workbookId}
-            onBack={() => setView({ name: "library" })}
+            studentMode={viewMode === "student"}
+            onContinue={() =>
+              setView({
+                name: "workbook-rubric",
+                workbookId: view.workbookId,
+              })
+            }
+          />
+        );
+      case "workbook-rubric":
+        return (
+          <WorkbookRubric
+            workbookId={view.workbookId}
+            studentMode={viewMode === "student"}
+            onContinue={() =>
+              setView({
+                name: "workbook-exercises",
+                workbookId: view.workbookId,
+              })
+            }
+          />
+        );
+      case "workbook-exercises":
+        return (
+          <WorkbookExercises
+            workbookId={view.workbookId}
+            studentMode={viewMode === "student"}
             onOpenExercise={(exerciseId) =>
-              setView({ name: "exercise", exerciseId, returnToWorkbookId: view.workbookId })
+              setView({
+                name: "exercise",
+                exerciseId,
+                returnToWorkbookId: view.workbookId,
+              })
             }
           />
         );
@@ -94,11 +160,17 @@ export default function AppShell() {
         return (
           <ExercisePlayer
             exerciseId={view.exerciseId}
-            onBack={() =>
-              view.returnToWorkbookId
-                ? setView({ name: "workbook", workbookId: view.returnToWorkbookId })
-                : setView({ name: "library" })
-            }
+            onBack={() => {
+              if (view.returnToWorkbookId) {
+                setView({
+                  name: "workbook-exercises",
+                  workbookId: view.returnToWorkbookId,
+                });
+                return;
+              }
+              if (viewMode === "student") setView({ name: "welcome" });
+              else setView({ name: "library" });
+            }}
           />
         );
       case "demo":
@@ -115,11 +187,15 @@ export default function AppShell() {
         ? "library"
         : view.name === "import"
           ? "import"
-          : view.name === "workbook"
-            ? `wb-${view.workbookId}`
-            : view.name === "exercise"
-              ? `ex-${view.exerciseId}`
-              : `demo-${view.conceptId}`;
+          : view.name === "workbook-intro"
+            ? `wb-intro-${view.workbookId}`
+            : view.name === "workbook-rubric"
+              ? `wb-rubric-${view.workbookId}`
+              : view.name === "workbook-exercises"
+              ? `wb-ex-${view.workbookId}`
+              : view.name === "exercise"
+                ? `ex-${view.exerciseId}`
+                : `demo-${view.conceptId}`;
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-surface-base">
@@ -130,10 +206,12 @@ export default function AppShell() {
         onGoWelcome={() => setView({ name: "welcome" })}
         onGoLibrary={() => setView({ name: "library" })}
         onGoImport={() => setView({ name: "import" })}
-        onDemoConcept={(id) => setView({ name: "demo", conceptId: id as ConceptId })}
+        onBack={handleNavBack}
       />
 
-      <main className={`relative flex flex-1 min-h-0 ${isFullHeight ? "overflow-hidden" : "overflow-y-auto"}`}>
+      <main
+        className={`relative flex flex-1 min-h-0 ${isFullHeight ? "overflow-hidden" : "overflow-y-auto"}`}
+      >
         <AnimatePresence mode="wait">
           <motion.div
             key={mainKey}
@@ -150,11 +228,15 @@ export default function AppShell() {
 
       {viewMode === "editor" && (
         <footer className="flex items-center justify-between border-t border-slate-100 bg-white px-6 py-2">
-          <span className="text-xs text-slate-400">Zwijsen PoC · Iteratie 0 · Groep 4–8</span>
-          <div className="flex items-center gap-1.5">
+          <span className="text-xs text-slate-400">
+            Zwijsen PoC · Iteratie 0 · Groep 4–8
+          </span>
+          <motion.div className="flex items-center gap-1.5">
             <div className="h-2 w-2 animate-pulse rounded-full bg-accent-success" />
-            <span className="text-xs text-slate-400">Human-in-the-loop actief</span>
-          </div>
+            <span className="text-xs text-slate-400">
+              Human-in-the-loop actief
+            </span>
+          </motion.div>
         </footer>
       )}
     </div>

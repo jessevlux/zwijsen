@@ -39,52 +39,24 @@ export default function ExercisePlayer({ exerciseId, onBack }: ExercisePlayerPro
     case "concept-kaart":
       return (
         <div className="flex h-full min-h-0 flex-col">
-          <button
-            type="button"
-            onClick={onBack}
-            className="shrink-0 border-b border-border-subtle bg-surface-card px-4 py-2 text-left text-xs font-bold text-text-secondary hover:bg-surface-muted"
-          >
-            ← Terug naar werkboek
-          </button>
           <ConceptKaart content={c} />
         </div>
       );
     case "swipe-kaarten":
       return (
         <div className="flex h-full min-h-0 flex-col">
-          <button
-            type="button"
-            onClick={onBack}
-            className="shrink-0 border-b border-border-subtle bg-surface-card px-4 py-2 text-left text-xs font-bold text-text-secondary hover:bg-surface-muted"
-          >
-            ← Terug naar werkboek
-          </button>
           <SwipeKaarten content={c} />
         </div>
       );
     case "raad-coach":
       return (
         <div className="flex h-full min-h-0 flex-col">
-          <button
-            type="button"
-            onClick={onBack}
-            className="shrink-0 border-b border-border-subtle bg-surface-card px-4 py-2 text-left text-xs font-bold text-text-secondary hover:bg-surface-muted"
-          >
-            ← Terug naar werkboek
-          </button>
           <RaadCoach content={c} />
         </div>
       );
     default:
       return (
         <div className="flex h-full min-h-0 flex-col">
-          <button
-            type="button"
-            onClick={onBack}
-            className="shrink-0 border-b border-border-subtle bg-surface-card px-4 py-2 text-left text-xs font-bold text-text-secondary hover:bg-surface-muted"
-          >
-            ← Terug naar werkboek
-          </button>
           <TypePlaceholder exerciseType={c.type} />
         </div>
       );

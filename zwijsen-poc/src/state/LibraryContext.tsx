@@ -1,6 +1,9 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
 import type { Exercise, Workbook } from "../types/workbook";
-import { createVloggenExampleWorkbook } from "../library/seedWorkbook";
+import {
+  createVloggenExampleWorkbook,
+  EXAMPLE_VLOGGEN_WORKBOOK_ID,
+} from "../library/seedWorkbook";
 
 const STORAGE_KEY = "zwijsen.library.workbooks.v1";
 
@@ -23,6 +26,29 @@ function saveWorkbooksToStorage(workbooks: Workbook[]) {
   }
 }
 
+/** Oude localStorage zonder rubricGoals: vul aan zodat de rubric-stap niet wordt overgeslagen. */
+function mergeStoredWorkbooks(stored: Workbook[]): Workbook[] {
+  const seed = createVloggenExampleWorkbook();
+  const seedGoals = seed.rubricGoals;
+  if (!seedGoals?.length) return stored;
+
+  let changed = false;
+  const next = stored.map((wb) => {
+    if (
+      wb.id === EXAMPLE_VLOGGEN_WORKBOOK_ID &&
+      (!wb.rubricGoals || wb.rubricGoals.length === 0)
+    ) {
+      changed = true;
+      return { ...wb, rubricGoals: seedGoals };
+    }
+    return wb;
+  });
+  if (changed) {
+    saveWorkbooksToStorage(next);
+  }
+  return next;
+}
+
 interface LibraryContextValue {
   workbooks: Workbook[];
   addWorkbook: (w: Workbook) => void;
@@ -37,7 +63,7 @@ const LibraryContext = createContext<LibraryContextValue | null>(null);
 export function LibraryProvider({ children }: { children: ReactNode }) {
   const [workbooks, setWorkbooks] = useState<Workbook[]>(() => {
     const stored = loadWorkbooksFromStorage();
-    if (stored?.length) return stored;
+    if (stored?.length) return mergeStoredWorkbooks(stored);
     return [createVloggenExampleWorkbook()];
   });
 

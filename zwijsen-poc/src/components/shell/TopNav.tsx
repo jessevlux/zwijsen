@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { BookOpen, Home, Upload } from "lucide-react";
-import { concepts, toneTokens } from "../../data/concepts";
+import { ArrowLeft, BookOpen, Home, Upload } from "lucide-react";
 import type { AppView } from "./appView";
+import { isWorkbookFlowView } from "./appView";
 import type { ViewMode } from "./viewMode";
 import ViewModeSwitch from "./ViewModeSwitch";
 
@@ -12,7 +12,7 @@ interface TopNavProps {
   onGoWelcome: () => void;
   onGoLibrary: () => void;
   onGoImport: () => void;
-  onDemoConcept: (id: string) => void;
+  onBack?: () => void;
 }
 
 function navBtn(active: boolean, extra = "") {
@@ -30,26 +30,53 @@ export default function TopNav({
   onGoWelcome,
   onGoLibrary,
   onGoImport,
-  onDemoConcept,
+  onBack,
 }: TopNavProps) {
   const editor = viewMode === "editor";
+  const showBack = isWorkbookFlowView(view) && !!onBack;
+
+  const inWorkbookFlow =
+    view.name === "workbook-intro" ||
+    view.name === "workbook-rubric" ||
+    view.name === "workbook-exercises" ||
+    (view.name === "exercise" && !!view.returnToWorkbookId);
 
   return (
     <nav
       className="flex items-center gap-2 border-b border-border-subtle bg-surface-card px-4 py-3 sm:px-6"
-      aria-label={editor ? "Redacteur: start, bibliotheek en import" : "Leerling: kies een oefening"}
+      aria-label={editor ? "Redacteur: start, bibliotheek en import" : "Leerling: navigatie"}
     >
-      <button
-        type="button"
-        onClick={onGoWelcome}
-        className="mr-2 flex shrink-0 items-center gap-2 rounded-xl outline-none ring-brand-orange transition-shadow hover:opacity-90 focus-visible:ring-2 sm:mr-4"
-        title="Terug naar start"
-      >
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-orange shadow-[var(--shadow-card)]">
-          <span className="text-sm font-black leading-none text-white">Z</span>
-        </div>
-        <span className="hidden text-base font-black text-text-primary sm:block">Zwijsen</span>
-      </button>
+      <div className="mr-2 flex shrink-0 items-center gap-2 sm:mr-4">
+        <button
+          type="button"
+          onClick={onGoWelcome}
+          className="flex shrink-0 items-center gap-2 rounded-xl outline-none ring-brand-orange transition-shadow hover:opacity-90 focus-visible:ring-2"
+          title={editor ? "Terug naar start" : "Terug naar werkboeken"}
+        >
+          <motion.div
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-orange shadow-[var(--shadow-card)]"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <span className="text-sm font-black leading-none text-white">Z</span>
+          </motion.div>
+          <span className="hidden text-base font-black text-text-primary sm:block">Zwijsen</span>
+        </button>
+
+        {showBack ? (
+          <motion.button
+            type="button"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={onBack}
+            className={navBtn(false)}
+            title="Terug"
+          >
+            <ArrowLeft size={18} className="shrink-0" strokeWidth={2} aria-hidden />
+            <span className="hidden sm:inline">Terug</span>
+          </motion.button>
+        ) : null}
+      </div>
 
       <div className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto">
         {editor && (
@@ -71,7 +98,9 @@ export default function TopNav({
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={onGoLibrary}
-              className={navBtn(view.name === "library" || view.name === "workbook")}
+              className={navBtn(
+                view.name === "library" || inWorkbookFlow,
+              )}
               title="Werkboeken beheren (redacteur)"
             >
               <BookOpen size={18} className="shrink-0 text-text-secondary" strokeWidth={2} aria-hidden />
@@ -91,34 +120,6 @@ export default function TopNav({
             </motion.button>
           </>
         )}
-
-        {!editor &&
-          concepts.map((concept) => {
-            const isActive = view.name === "demo" && view.conceptId === concept.id;
-            const Icon = concept.Icon;
-            const accent = toneTokens[concept.tone].accentColor;
-            return (
-              <motion.button
-                key={concept.id}
-                type="button"
-                onClick={() => onDemoConcept(concept.id)}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className={navBtn(isActive)}
-                title={`Open oefening: ${concept.title}`}
-              >
-                <Icon
-                  size={18}
-                  className="shrink-0"
-                  style={{ color: isActive ? "var(--color-text-inverted)" : accent }}
-                  strokeWidth={2}
-                  aria-hidden
-                />
-                <span className="hidden lg:inline">{concept.title}</span>
-                <span className="lg:hidden font-black">{concept.number}</span>
-              </motion.button>
-            );
-          })}
       </div>
 
       <ViewModeSwitch mode={viewMode} onChange={onViewModeChange} />

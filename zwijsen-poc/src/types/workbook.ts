@@ -23,6 +23,12 @@ export interface SourceText {
   body?: string;
 }
 
+/** Leerdoel voor de interactieve zelfevaluatierubric aan het begin van een werkboek. */
+export interface RubricGoal {
+  id: string;
+  label: string;
+}
+
 export interface Exercise {
   id: string;
   workbookId: string;
@@ -45,4 +51,6 @@ export interface Workbook {
   importedAt?: string;
   exercises: Exercise[];
   sources: SourceText[];
+  /** Optioneel: zelfevaluatie vóór opdrachten; ontbrekend of leeg = rubricscherm overslaan. */
+  rubricGoals?: RubricGoal[];
 }

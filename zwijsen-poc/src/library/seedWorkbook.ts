@@ -3,21 +3,25 @@ import { vloggenConceptKaartContent } from "../components/concepts/ConceptKaart/
 import { vloggenSwipeContent } from "../components/concepts/SwipeKaarten/examples";
 import { vloggenRaadCoachContent } from "../components/concepts/RaadCoach/examples";
 
-const WB_ID = "wb-example-vloggen";
+export const EXAMPLE_VLOGGEN_WORKBOOK_ID = "wb-example-vloggen" as const;
 
 /** Voorbeeld-werkboek met de drie bestaande oefeningen + Vloggen-content. */
 export function createVloggenExampleWorkbook(): Workbook {
   return {
-    id: WB_ID,
-    title: "Taaljacht — Groep 8 — Vloggen",
+    id: EXAMPLE_VLOGGEN_WORKBOOK_ID,    title: "Taaljacht — Groep 8 — Vloggen",
     grade: "Groep 8",
     side: "taakboekje",
     pages: 24,
     origin: "example",
+    rubricGoals: [
+      { id: "rg-1", label: "Ik kan vertellen wat kenmerken zijn van vloggen." },
+      { id: "rg-2", label: "Ik kan een vlogplan maken." },
+      { id: "rg-3", label: "Ik kan mijn vlog presenteren." },
+    ],
     exercises: [
       {
         id: "ex-example-concept-kaart",
-        workbookId: WB_ID,
+        workbookId: EXAMPLE_VLOGGEN_WORKBOOK_ID,
         pageNumber: 1,
         type: "concept-kaart",
         difficulty: "a",
@@ -27,7 +31,7 @@ export function createVloggenExampleWorkbook(): Workbook {
       },
       {
         id: "ex-example-swipe",
-        workbookId: WB_ID,
+        workbookId: EXAMPLE_VLOGGEN_WORKBOOK_ID,
         pageNumber: 2,
         type: "swipe-kaarten",
         difficulty: "b",
@@ -37,7 +41,7 @@ export function createVloggenExampleWorkbook(): Workbook {
       },
       {
         id: "ex-example-raad-coach",
-        workbookId: WB_ID,
+        workbookId: EXAMPLE_VLOGGEN_WORKBOOK_ID,
         pageNumber: 3,
         type: "raad-coach",
         difficulty: "c",
