@@ -1,7 +1,9 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
 import type { Exercise, Workbook } from "../types/workbook";
 import {
+  createTestExtractedWorkbook,
   createVloggenExampleWorkbook,
+  EXAMPLE_TEST_WORKBOOK_ID,
   EXAMPLE_VLOGGEN_WORKBOOK_ID,
 } from "../library/seedWorkbook";
 
@@ -31,7 +33,7 @@ function mergeStoredWorkbooks(stored: Workbook[]): Workbook[] {
   const seed = createVloggenExampleWorkbook();
   let changed = false;
 
-  const next = stored.map((wb) => {
+  const next: Workbook[] = stored.map((wb) => {
     if (wb.id !== EXAMPLE_VLOGGEN_WORKBOOK_ID) return wb;
 
     let workbook = wb;
@@ -64,6 +66,12 @@ function mergeStoredWorkbooks(stored: Workbook[]): Workbook[] {
     return workbook;
   });
 
+  // Voeg het Test-werkboek toe als het in localStorage nog ontbreekt.
+  if (!next.some((wb) => wb.id === EXAMPLE_TEST_WORKBOOK_ID)) {
+    next.push(createTestExtractedWorkbook());
+    changed = true;
+  }
+
   if (changed) {
     saveWorkbooksToStorage(next);
   }
@@ -85,7 +93,7 @@ export function LibraryProvider({ children }: { children: ReactNode }) {
   const [workbooks, setWorkbooks] = useState<Workbook[]>(() => {
     const stored = loadWorkbooksFromStorage();
     if (stored?.length) return mergeStoredWorkbooks(stored);
-    return [createVloggenExampleWorkbook()];
+    return [createVloggenExampleWorkbook(), createTestExtractedWorkbook()];
   });
 
   const addWorkbook = useCallback((w: Workbook) => {

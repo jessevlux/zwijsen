@@ -3,12 +3,25 @@ import type { ImportDraft } from "./types";
 import type { Difficulty, ExerciseType } from "../../../types/workbook";
 import { newId } from "../../../library/id";
 
+type Status = "idle" | "uploading" | "processing" | "fetching" | "done" | "error";
+
 interface Props {
   draft: ImportDraft;
   setDraft: (d: ImportDraft | ((prev: ImportDraft) => ImportDraft)) => void;
   onNext: () => void;
   onBack: () => void;
+  status: Status;
+  error: string | null;
 }
+
+const STATUS_LABEL: Record<Status, string> = {
+  idle: "",
+  uploading: "Uploaden naar server…",
+  processing: "Server analyseert het werkboek (kan minuten duren)…",
+  fetching: "Resultaten ophalen…",
+  done: "Klaar — opdrachten uit de PDF zijn toegevoegd.",
+  error: "Er ging iets mis bij het verwerken.",
+};
 
 const TYPES: ExerciseType[] = [
   "concept-kaart",
@@ -24,7 +37,8 @@ const TYPES: ExerciseType[] = [
   "rubric",
 ];
 
-export default function PreviewStep({ draft, setDraft, onNext, onBack }: Props) {
+export default function PreviewStep({ draft, setDraft, onNext, onBack, status, error }: Props) {
+  const isProcessing = status === "uploading" || status === "processing" || status === "fetching";
   const [pageForNew, setPageForNew] = useState(1);
   const [newType, setNewType] = useState<ExerciseType>("meerkeuze");
 
@@ -62,7 +76,22 @@ export default function PreviewStep({ draft, setDraft, onNext, onBack }: Props) 
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 lg:flex-row">
+    <div className="mx-auto flex w-full max-w-5xl flex-col gap-4">
+      {status !== "idle" && (
+        <div
+          className={`rounded-xl border px-3 py-2 text-xs ${
+            status === "error"
+              ? "border-red-200 bg-red-50 text-red-800"
+              : status === "done"
+                ? "border-green-200 bg-green-50 text-green-800"
+                : "border-amber-200 bg-amber-50 text-amber-900"
+          }`}
+        >
+          <p className="font-bold">{STATUS_LABEL[status]}</p>
+          {status === "error" && error && <p className="mt-1 font-mono text-[10px]">{error}</p>}
+        </div>
+      )}
+      <div className="flex flex-col gap-4 lg:flex-row">
       <div className="lg:w-1/3 shrink-0 space-y-2">
         <p className="text-xs font-bold uppercase text-text-muted">Pagina-preview</p>
         <div className="flex aspect-[3/4] items-center justify-center rounded-2xl border-2 border-dashed border-border-strong bg-surface-muted text-sm text-text-muted">
@@ -217,10 +246,16 @@ export default function PreviewStep({ draft, setDraft, onNext, onBack }: Props) 
           <button type="button" onClick={onBack} className="rounded-xl border border-border-subtle px-4 py-2 text-sm font-bold">
             Terug
           </button>
-          <button type="button" onClick={onNext} className="flex-1 rounded-xl bg-brand-orange py-2 text-sm font-black text-white">
-            Volgende
+          <button
+            type="button"
+            onClick={onNext}
+            disabled={isProcessing}
+            className="flex-1 rounded-xl bg-brand-orange py-2 text-sm font-black text-white disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isProcessing ? "Even geduld…" : "Volgende"}
           </button>
         </div>
+      </div>
       </div>
     </div>
   );
