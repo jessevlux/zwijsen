@@ -1,9 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useLibrary } from "../../../state/LibraryContext";
 import { newId } from "../../../library/id";
-import { useProcessPdf } from "../../../api/useProcessPdf";
 import type { Workbook } from "../../../types/workbook";
-import type { ConceptKaartContent } from "../../../types/exerciseContent";
 import type { ImportDraft } from "./types";
 import UploadStep from "./UploadStep";
 import PreviewStep from "./PreviewStep";
@@ -29,39 +27,6 @@ export default function ImportFlow({ onCancel, onComplete }: ImportFlowProps) {
   const { addWorkbook } = useLibrary();
   const [step, setStep] = useState(1);
   const [draft, setDraft] = useState<ImportDraft>(initialDraft);
-
-  const { status, error, jobId, conceptkaart, process } = useProcessPdf();
-
-  // Auto-add the concept-kaart Exercise to the draft when the pipeline finishes.
-  // Guarded by jobId so a single successful run only injects once.
-  const importedJobIdRef = useRef<string | null>(null);
-  useEffect(() => {
-    if (status !== "done") return;
-    if (!jobId || jobId === importedJobIdRef.current) return;
-    if (!conceptkaart) return;
-    importedJobIdRef.current = jobId;
-    setDraft((d) => ({
-      ...d,
-      exercises: [
-        ...d.exercises,
-        {
-          id: newId("ex"),
-          workbookId: "draft",
-          pageNumber: 1,
-          type: "concept-kaart",
-          difficulty: "b",
-          isPlus: false,
-          isOwnAnswer: false,
-          content: conceptkaart as ConceptKaartContent,
-        },
-      ],
-    }));
-  }, [status, jobId, conceptkaart]);
-
-  const startProcessing = useCallback(
-    (file: File) => process(file, draft.grade),
-    [process, draft.grade],
-  );
 
   function handleSave() {
     const wbId = newId("wb");
@@ -119,25 +84,9 @@ export default function ImportFlow({ onCancel, onComplete }: ImportFlowProps) {
         </div>
       </header>
       <div className="min-h-0 flex-1 overflow-y-auto px-4 py-6">
-        {step === 1 && (
-          <UploadStep
-            draft={draft}
-            setDraft={setDraft}
-            onNext={() => setStep(2)}
-            onStart={startProcessing}
-            status={status}
-            error={error}
-          />
-        )}
+        {step === 1 && <UploadStep draft={draft} setDraft={setDraft} onNext={() => setStep(2)} />}
         {step === 2 && (
-          <PreviewStep
-            draft={draft}
-            setDraft={setDraft}
-            onBack={() => setStep(1)}
-            onNext={() => setStep(3)}
-            status={status}
-            error={error}
-          />
+          <PreviewStep draft={draft} setDraft={setDraft} onBack={() => setStep(1)} onNext={() => setStep(3)} />
         )}
         {step === 3 && <ConfirmStep draft={draft} onBack={() => setStep(2)} onSave={handleSave} />}
       </div>

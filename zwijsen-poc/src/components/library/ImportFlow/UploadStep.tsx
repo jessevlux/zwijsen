@@ -2,44 +2,33 @@ import type { ChangeEvent } from "react";
 import type { ImportDraft } from "./types";
 import type { BookSide } from "../../../types/workbook";
 
-type Status = "idle" | "uploading" | "processing" | "fetching" | "done" | "error";
-
 interface Props {
   draft: ImportDraft;
   setDraft: (d: ImportDraft | ((prev: ImportDraft) => ImportDraft)) => void;
   onNext: () => void;
-  onStart: (file: File) => void;
-  status: Status;
-  error: string | null;
 }
 
-const STATUS_LABEL: Record<Status, string> = {
-  idle: "",
-  uploading: "Uploaden naar server…",
-  processing: "Server analyseert het werkboek (kan minuten duren)…",
-  fetching: "Resultaten ophalen…",
-  done: "Klaar — concept-kaart toegevoegd aan de preview.",
-  error: "Er ging iets mis.",
-};
-
-export default function UploadStep({ draft, setDraft, onNext, onStart, status, error }: Props) {
-  const isProcessing = status === "uploading" || status === "processing" || status === "fetching";
-
+export default function UploadStep({ draft, setDraft, onNext }: Props) {
   function onFileChange(e: ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0];
     if (!f) {
       setDraft((d) => ({ ...d, fileName: null, fileSize: null }));
       return;
     }
+    // TODO(handover): PDF-parser — nu alleen bestandsmeta voor de flow.
     setDraft((d) => ({ ...d, fileName: f.name, fileSize: f.size }));
-    onStart(f);
   }
 
   return (
     <div className="mx-auto w-full max-w-lg space-y-4">
+      <span className="inline-block rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-black uppercase text-amber-900">
+        Mock — niet functioneel
+      </span>
       <p className="text-sm text-text-secondary leading-relaxed">
-        Kies een PDF; de server extraheert woordenlijst, lessen en — als er voldoende woorden zijn —
-        een concept-kaart-opdracht die in stap 2 verschijnt.
+        PDF-upload staat in de UI; er wordt niets geparsed. Gebruik dit scherm om de flow met de groep af te stemmen.
+      </p>
+      <p className="text-xs text-text-muted">
+        Je kunt direct naar stap 2. Laat je de titel leeg, dan wordt bij opslaan <strong>Zonder titel</strong> gebruikt.
       </p>
 
       <label className="block text-xs font-bold uppercase text-text-muted">Titel werkboek</label>
@@ -79,22 +68,10 @@ export default function UploadStep({ draft, setDraft, onNext, onStart, status, e
 
       <div className="rounded-2xl border-2 border-dashed border-border-strong bg-surface-muted/50 px-4 py-8 text-center">
         <p className="text-sm font-bold text-text-primary">PDF werkboek</p>
-        <p className="mt-1 text-xs text-text-muted">
-          Wordt naar de lokale extractie-server gestuurd zodra je kiest.
-        </p>
-        <label
-          className={`mt-4 inline-block rounded-xl bg-brand-orange px-4 py-2 text-sm font-black text-white hover:opacity-95 ${
-            isProcessing ? "cursor-not-allowed opacity-50" : "cursor-pointer"
-          }`}
-        >
+        <p className="mt-1 text-xs text-text-muted">Alleen bestandsnaam + grootte; geen inhoudsverwerking.</p>
+        <label className="mt-4 inline-block cursor-pointer rounded-xl bg-brand-orange px-4 py-2 text-sm font-black text-white hover:opacity-95">
           Kies bestand
-          <input
-            type="file"
-            accept="application/pdf"
-            className="hidden"
-            onChange={onFileChange}
-            disabled={isProcessing}
-          />
+          <input type="file" accept="application/pdf" className="hidden" onChange={onFileChange} />
         </label>
         {draft.fileName && (
           <p className="mt-3 text-xs text-text-secondary">
@@ -103,29 +80,13 @@ export default function UploadStep({ draft, setDraft, onNext, onStart, status, e
         )}
       </div>
 
-      {status !== "idle" && (
-        <div
-          className={`rounded-xl border px-3 py-2 text-xs ${
-            status === "error"
-              ? "border-red-200 bg-red-50 text-red-800"
-              : status === "done"
-                ? "border-green-200 bg-green-50 text-green-800"
-                : "border-amber-200 bg-amber-50 text-amber-900"
-          }`}
-        >
-          <p className="font-bold">{STATUS_LABEL[status]}</p>
-          {status === "error" && error && <p className="mt-1 font-mono text-[10px]">{error}</p>}
-        </div>
-      )}
-
       <div className="flex gap-2 pt-2">
         <button
           type="button"
           onClick={onNext}
-          disabled={isProcessing}
-          className="flex-1 rounded-xl bg-brand-orange py-3 text-sm font-black text-white hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex-1 rounded-xl bg-brand-orange py-3 text-sm font-black text-white hover:opacity-95"
         >
-          {isProcessing ? "Even geduld…" : "Volgende"}
+          Volgende
         </button>
       </div>
     </div>
