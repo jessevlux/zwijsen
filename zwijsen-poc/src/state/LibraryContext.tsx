@@ -1,11 +1,10 @@
-import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { Exercise, Workbook } from "../types/workbook";
 import {
-  createTestExtractedWorkbook,
   createVloggenExampleWorkbook,
-  EXAMPLE_TEST_WORKBOOK_ID,
   EXAMPLE_VLOGGEN_WORKBOOK_ID,
 } from "../library/seedWorkbook";
+import { useServerImport } from "../api/useServerImport";
 
 const STORAGE_KEY = "zwijsen.library.workbooks.v1";
 
@@ -66,12 +65,6 @@ function mergeStoredWorkbooks(stored: Workbook[]): Workbook[] {
     return workbook;
   });
 
-  // Voeg het Test-werkboek toe als het in localStorage nog ontbreekt.
-  if (!next.some((wb) => wb.id === EXAMPLE_TEST_WORKBOOK_ID)) {
-    next.push(createTestExtractedWorkbook());
-    changed = true;
-  }
-
   if (changed) {
     saveWorkbooksToStorage(next);
   }
@@ -93,8 +86,15 @@ export function LibraryProvider({ children }: { children: ReactNode }) {
   const [workbooks, setWorkbooks] = useState<Workbook[]>(() => {
     const stored = loadWorkbooksFromStorage();
     if (stored?.length) return mergeStoredWorkbooks(stored);
-    return [createVloggenExampleWorkbook(), createTestExtractedWorkbook()];
+    return [createVloggenExampleWorkbook()];
   });
+
+  // Keep a live snapshot of ids so the startup server-import can skip
+  // workbooks we already have without re-fetching their files.
+  const workbooksRef = useRef(workbooks);
+  useEffect(() => {
+    workbooksRef.current = workbooks;
+  }, [workbooks]);
 
   const addWorkbook = useCallback((w: Workbook) => {
     setWorkbooks((prev) => {
@@ -103,6 +103,23 @@ export function LibraryProvider({ children }: { children: ReactNode }) {
       return next;
     });
   }, []);
+
+  // Merge server-imported workbooks, deduped against current state.
+  const mergeImportedWorkbooks = useCallback((incoming: Workbook[]) => {
+    setWorkbooks((prev) => {
+      const ids = new Set(prev.map((w) => w.id));
+      const toAdd = incoming.filter((w) => !ids.has(w.id));
+      if (toAdd.length === 0) return prev;
+      const next = [...prev, ...toAdd];
+      saveWorkbooksToStorage(next);
+      return next;
+    });
+  }, []);
+
+  useServerImport(
+    mergeImportedWorkbooks,
+    useCallback(() => new Set(workbooksRef.current.map((w) => w.id)), []),
+  );
 
   const updateExercise = useCallback((workbookId: string, exercise: Exercise) => {
     setWorkbooks((prev) => {

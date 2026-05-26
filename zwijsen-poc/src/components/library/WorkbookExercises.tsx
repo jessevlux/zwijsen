@@ -157,7 +157,7 @@ export default function WorkbookExercises({
                   </p>
                 </motion.button>
 
-                {!studentMode && (
+                {!studentMode && ex.type === "concept-kaart" && (
                   <button
                     type="button"
                     onClick={() => setAiExercise(ex)}
