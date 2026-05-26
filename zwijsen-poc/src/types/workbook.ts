@@ -39,6 +39,7 @@ export interface Exercise {
   isOwnAnswer: boolean;
   sourceTextId?: string;
   content?: ExerciseContent;
+  variants?: ExerciseContent[];
 }
 
 export interface Workbook {

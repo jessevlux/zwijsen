@@ -1,27 +1,17 @@
 import type { Workbook } from "../types/workbook";
-import type {
-  InvullenZinContent,
-  KoppelenLijnenContent,
-  MarkerenContent,
-  MeerkeuzeContent,
-  TabelInvullenContent,
-} from "../types/exerciseContent";
 import { vloggenConceptKaartContent } from "../components/concepts/ConceptKaart/examples";
 import { vloggenSwipeContent } from "../components/concepts/SwipeKaarten/examples";
 import { vloggenRaadCoachContent } from "../components/concepts/RaadCoach/examples";
+import { vloggenInvullenZinContent, vloggenInvullenZinContent2, vloggenInvullenZinContent3 } from "../components/concepts/InvullenZin/examples";
+import { vloggenMeerkeuzeContent, vloggenMeerkeuzeContent2, vloggenMeerkeuzeContent3 } from "../components/concepts/Meerkeuze/examples";
+import { vloggenKoppelenContent, vloggenKoppelenContent2, vloggenKoppelenContent3 } from "../components/concepts/Koppelen/examples";
+import { vloggenMarkerenContent, vloggenMarkerenContent2, vloggenMarkerenContent3 } from "../components/concepts/Markeren/examples";
+import { vloggenTabelContent, vloggenTabelContent2, vloggenTabelContent3 } from "../components/concepts/TabelInvullen/examples";
 
 export const EXAMPLE_VLOGGEN_WORKBOOK_ID = "wb-example-vloggen" as const;
 
 export const EXAMPLE_VLOGGEN_SOURCE_INTRO_ID = "src-vloggen-intro" as const;
 
-/** Skeleton content — triggert TypePlaceholder tot de UI gebouwd is. */
-export const vloggenMeerkeuzeSkeleton: MeerkeuzeContent = { type: "meerkeuze" };
-export const vloggenKoppelenSkeleton: KoppelenLijnenContent = { type: "koppelen-lijnen" };
-export const vloggenInvullenZinSkeleton: InvullenZinContent = { type: "invullen-zin" };
-export const vloggenMarkerenSkeleton: MarkerenContent = { type: "markeren" };
-export const vloggenTabelSkeleton: TabelInvullenContent = { type: "tabel-invullen" };
-
-/** Voorbeeld-werkboek: drie werkende oefeningen + vijf team-placeholders. */
 export function createVloggenExampleWorkbook(): Workbook {
   return {
     id: EXAMPLE_VLOGGEN_WORKBOOK_ID,
@@ -74,17 +64,8 @@ export function createVloggenExampleWorkbook(): Workbook {
         difficulty: "b",
         isPlus: false,
         isOwnAnswer: false,
-        content: vloggenMeerkeuzeSkeleton,
-      },
-      {
-        id: "ex-example-koppelen",
-        workbookId: EXAMPLE_VLOGGEN_WORKBOOK_ID,
-        pageNumber: 6,
-        type: "koppelen-lijnen",
-        difficulty: "a",
-        isPlus: false,
-        isOwnAnswer: false,
-        content: vloggenKoppelenSkeleton,
+        content: vloggenMeerkeuzeContent,
+        variants: [vloggenMeerkeuzeContent2, vloggenMeerkeuzeContent3],
       },
       {
         id: "ex-example-invullen-zin",
@@ -95,7 +76,19 @@ export function createVloggenExampleWorkbook(): Workbook {
         isPlus: false,
         isOwnAnswer: false,
         sourceTextId: EXAMPLE_VLOGGEN_SOURCE_INTRO_ID,
-        content: vloggenInvullenZinSkeleton,
+        content: vloggenInvullenZinContent,
+        variants: [vloggenInvullenZinContent2, vloggenInvullenZinContent3],
+      },
+      {
+        id: "ex-example-koppelen",
+        workbookId: EXAMPLE_VLOGGEN_WORKBOOK_ID,
+        pageNumber: 6,
+        type: "koppelen-lijnen",
+        difficulty: "a",
+        isPlus: false,
+        isOwnAnswer: false,
+        content: vloggenKoppelenContent,
+        variants: [vloggenKoppelenContent2, vloggenKoppelenContent3],
       },
       {
         id: "ex-example-markeren",
@@ -106,7 +99,8 @@ export function createVloggenExampleWorkbook(): Workbook {
         isPlus: false,
         isOwnAnswer: false,
         sourceTextId: EXAMPLE_VLOGGEN_SOURCE_INTRO_ID,
-        content: vloggenMarkerenSkeleton,
+        content: vloggenMarkerenContent,
+        variants: [vloggenMarkerenContent2, vloggenMarkerenContent3],
       },
       {
         id: "ex-example-tabel",
@@ -116,7 +110,8 @@ export function createVloggenExampleWorkbook(): Workbook {
         difficulty: "c",
         isPlus: false,
         isOwnAnswer: false,
-        content: vloggenTabelSkeleton,
+        content: vloggenTabelContent,
+        variants: [vloggenTabelContent2, vloggenTabelContent3],
       },
     ],
     sources: [

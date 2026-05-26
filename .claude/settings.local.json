@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\ljlan\\\\OneDrive\\\\Documenten\\\\GitHub\\\\zwijsenJessevlux\" -Force)",
+      "Bash(Select-Object Name)",
+      "Bash(npm run *)",
+      "PowerShell(\\(pwd\\).Path)",
+      "Bash(npm run dev > /tmp/dev-server.log 2>&1 & *)",
+      "Read(//tmp/**)",
+      "Bash(cat)",
+      "Bash(chmod +x /tmp/verify.sh)",
+      "Bash(/tmp/verify.sh)",
+      "Bash(tee /tmp/vite.log)",
+      "Bash(grep -E \"tsx|ts$\")",
+      "Bash(pkill -f \"npm run dev\")",
+      "Bash(cd /c/Users/ljlan/OneDrive/Documenten/GitHub/zwijsenJessevlux/zwijsen-poc && pwd && ls src/library/seedWorkbook.ts)",
+      "Read(//c/c/Users/ljlan/OneDrive/Documenten/GitHub/zwijsenJessevlux/zwijsen-poc/src/library/**)",
+      "Bash(pkill -9 -f \"node.*vite\")",
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(Start-Sleep -Milliseconds 3000)",
+      "Bash(Get-Content \"C:\\\\Users\\\\ljlan\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-ljlan-OneDrive-Documenten-GitHub-zwijsenJessevlux\\\\a19bfe45-ed2a-4ecd-9ff1-ad403cb888d1\\\\tasks\\\\b55bqmvnt.output\" -Tail 20)"
+    ]
+  }
+}

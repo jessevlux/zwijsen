@@ -2,6 +2,11 @@ import { useLibrary } from "../../state/LibraryContext";
 import ConceptKaart from "../concepts/ConceptKaart";
 import RaadCoach from "../concepts/RaadCoach";
 import SwipeKaarten from "../concepts/SwipeKaarten";
+import InvullenZin from "../concepts/InvullenZin";
+import Meerkeuze from "../concepts/Meerkeuze";
+import Koppelen from "../concepts/Koppelen";
+import Markeren from "../concepts/Markeren";
+import TabelInvullen from "../concepts/TabelInvullen";
 import { EmptyExerciseContent, TypePlaceholder } from "../concepts/placeholders/TypePlaceholder";
 
 interface ExercisePlayerProps {
@@ -52,6 +57,36 @@ export default function ExercisePlayer({ exerciseId, onBack }: ExercisePlayerPro
       return (
         <div className="flex h-full min-h-0 flex-col">
           <RaadCoach content={c} />
+        </div>
+      );
+    case "invullen-zin":
+      return (
+        <div className="flex h-full min-h-0 flex-col">
+          <InvullenZin content={c} />
+        </div>
+      );
+    case "meerkeuze":
+      return (
+        <div className="flex h-full min-h-0 flex-col">
+          <Meerkeuze content={c} />
+        </div>
+      );
+    case "koppelen-lijnen":
+      return (
+        <div className="flex h-full min-h-0 flex-col">
+          <Koppelen content={c} />
+        </div>
+      );
+    case "markeren":
+      return (
+        <div className="flex h-full min-h-0 flex-col">
+          <Markeren content={c} />
+        </div>
+      );
+    case "tabel-invullen":
+      return (
+        <div className="flex h-full min-h-0 flex-col">
+          <TabelInvullen content={c} />
         </div>
       );
     default:

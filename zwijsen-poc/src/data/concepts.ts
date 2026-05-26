@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { Globe, Layers, Mic, Network, Users } from "lucide-react";
+import { Globe, Layers, Mic, Network, Users, Type, CheckSquare, Link2, Highlighter, Table2 } from "lucide-react";
 import { zwijsenTokens as Z } from "../theme/zwijsenTokens";
 
 /** Visuele toon per concept: koppelt aan accentkleuren in het design system. */
@@ -79,6 +79,81 @@ export const concepts: Concept[] = [
     didacticGoal:
       "Kagan coöperatief leren: positieve wederzijdse afhankelijkheid en actieve woordproductie.",
   },
+  {
+    id: "meerkeuze",
+    number: 4,
+    title: "Meerkeuze",
+    subtitle: "Meervoudige Keuze",
+    dashboardSubtitle: "Groep 4–8 · Feitenkennis",
+    Icon: CheckSquare,
+    tone: "info",
+    grade: "Groep 4–8",
+    theme: "Feitenkennis",
+    description:
+      "Één vraag, meerdere opties, één of meerdere juiste antwoorden. Selecteer met aankruisvakjes.",
+    didacticGoal:
+      "Toets feitenkennis en begrip op laagdrempelige manier met duidelijke feedback.",
+  },
+  {
+    id: "invullen-zin",
+    number: 5,
+    title: "Invullen in een zin",
+    subtitle: "Contextueel Woordgebruik",
+    dashboardSubtitle: "Groep 5–8 · Zinsbouw",
+    Icon: Type,
+    tone: "success",
+    grade: "Groep 5–8",
+    theme: "Zinsbouw",
+    description:
+      "Vul woorden in lege plaatsen van zinnen — met of zonder woordbank. Sluit aan bij contextueel woordgebruik.",
+    didacticGoal:
+      "Leerlingen oefenen woorden in echte zinscontexten en versterken begrip van woordgebruik en betekenis.",
+  },
+  {
+    id: "koppelen-lijnen",
+    number: 6,
+    title: "Koppelen (lijnen trekken)",
+    subtitle: "Pairing & Linking",
+    dashboardSubtitle: "Groep 4–8 · Woordassociatie",
+    Icon: Link2,
+    tone: "violet",
+    grade: "Groep 4–8",
+    theme: "Woordassociatie",
+    description:
+      "Verbind woorden van de linkerkant met hun betekenissen of tegenhangers aan de rechterkant door erop te klikken.",
+    didacticGoal:
+      "Leerlingen leggen visueel sterke verbindingen tussen woorden en hun definities of gerelateerde concepten.",
+  },
+  {
+    id: "markeren",
+    number: 7,
+    title: "Markeren",
+    subtitle: "Tekstmarkering & Analyse",
+    dashboardSubtitle: "Groep 5–8 · Tekstbegrip",
+    Icon: Highlighter,
+    tone: "amber",
+    grade: "Groep 5–8",
+    theme: "Tekstbegrip",
+    description:
+      "Selecteer zinnen of woorden in een tekst om onderdelen aan te duiden die aan bepaalde criteria voldoen.",
+    didacticGoal:
+      "Actief lezen oefenen: leerlingen leren kritisch naar tekst kijken en relevante delen herkennen.",
+  },
+  {
+    id: "tabel-invullen",
+    number: 8,
+    title: "Tabel invullen",
+    subtitle: "Gestructureerde Tabelgegevens",
+    dashboardSubtitle: "Groep 4–8 · Gegevensorganisatie",
+    Icon: Table2,
+    tone: "warm",
+    grade: "Groep 4–8",
+    theme: "Gegevensorganisatie",
+    description:
+      "Vul cellen in een tabel in op basis van gegeven criteria of context. Test begrip van gestructureerde informatie.",
+    didacticGoal:
+      "Leerlingen oefenen het organiseren en structureren van informatie in een duidelijke tabel-indeling.",
+  },
 ];
 
 /**
@@ -88,7 +163,7 @@ export const concepts: Concept[] = [
 export const archivedConcepts: Concept[] = [
   {
     id: "woordenwereld",
-    number: 4,
+    number: 6,
     title: "Woordenwereld",
     subtitle: "Immersieve Woordenwereld",
     dashboardSubtitle: "Groep 4–6 · Poppenspel",
@@ -103,7 +178,7 @@ export const archivedConcepts: Concept[] = [
   },
   {
     id: "spraakstudio",
-    number: 5,
+    number: 7,
     title: "Spraakstudio",
     subtitle: "Interactieve Storytelling & Spraakstudio",
     dashboardSubtitle: "Groep 7–8 · Vloggen",
