@@ -26,7 +26,17 @@ function saveWorkbooksToStorage(workbooks: Workbook[]) {
   }
 }
 
-/** Oude localStorage: vul rubricGoals en ontbrekende seed-opdrachten/bronteksten aan. */
+/** True when content is an old placeholder ({ type only }) or otherwise unusable. */
+function exerciseNeedsSeedSync(stored: Exercise, seed: Exercise): boolean {
+  if (!seed.content) return false;
+  if (!stored.content) return true;
+  if (stored.content.type !== seed.content.type) return true;
+  if (!("brief" in stored.content) || !stored.content.brief) return true;
+  if (seed.variants?.length && !stored.variants?.length) return true;
+  return false;
+}
+
+/** Oude localStorage: vul rubricGoals, ontbrekende opdrachten en verouderde skeleton-content aan. */
 function mergeStoredWorkbooks(stored: Workbook[]): Workbook[] {
   const seed = createVloggenExampleWorkbook();
   let changed = false;
@@ -39,6 +49,20 @@ function mergeStoredWorkbooks(stored: Workbook[]): Workbook[] {
     if (seedGoals?.length && (!workbook.rubricGoals || workbook.rubricGoals.length === 0)) {
       workbook = { ...workbook, rubricGoals: seedGoals };
       changed = true;
+    }
+
+    const seedById = new Map(seed.exercises.map((e) => [e.id, e]));
+    let exercisesSynced = false;
+    const syncedExercises = workbook.exercises.map((ex) => {
+      const seedEx = seedById.get(ex.id);
+      if (!seedEx || !exerciseNeedsSeedSync(ex, seedEx)) return ex;
+      exercisesSynced = true;
+      return { ...seedEx, workbookId: workbook.id };
+    });
+
+    if (exercisesSynced) {
+      changed = true;
+      workbook = { ...workbook, exercises: syncedExercises };
     }
 
     const existingIds = new Set(workbook.exercises.map((e) => e.id));

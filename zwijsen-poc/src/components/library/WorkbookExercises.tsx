@@ -18,7 +18,7 @@ export default function WorkbookExercises({
   onOpenExercise,
   studentMode = false,
 }: WorkbookExercisesProps) {
-  const { getWorkbook } = useLibrary();
+  const { getWorkbook, updateExercise } = useLibrary();
   const wb = getWorkbook(workbookId);
   const [aiExercise, setAiExercise] = useState<Exercise | null>(null);
   const [variantExercise, setVariantExercise] = useState<Exercise | null>(null);
@@ -189,12 +189,20 @@ export default function WorkbookExercises({
 
       <VariantSelector
         open={!!variantExercise}
-        variants={variantExercise?.variants || []}
+        variants={
+          variantExercise
+            ? [
+                ...(variantExercise.content ? [variantExercise.content] : []),
+                ...(variantExercise.variants ?? []),
+              ]
+            : []
+        }
         onSelect={(variant: ExerciseContent) => {
-          if (variantExercise) {
-            variantExercise.content = variant;
-            onOpenExercise(variantExercise.id);
-          }
+          if (!variantExercise) return;
+          const updated = { ...variantExercise, content: variant };
+          updateExercise(workbookId, updated);
+          setVariantExercise(null);
+          onOpenExercise(variantExercise.id);
         }}
         onClose={() => setVariantExercise(null)}
       />
