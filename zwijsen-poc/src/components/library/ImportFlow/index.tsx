@@ -55,8 +55,7 @@ export default function ImportFlow({ onCancel, onComplete }: ImportFlowProps) {
           <div>
             <h1 className="text-base font-black text-text-primary">Werkboek importeren</h1>
             <p className="mt-1 max-w-2xl text-xs leading-relaxed text-text-muted">
-              Begeleide import: werkboeken zijn visueel complex — we streven niet naar foutloze volledige automatisering;
-              redactie en controle blijven nodig. Output wordt gestructureerd (o.a. vraag, antwoord, brontekst).
+              Upload een PDF en controleer de opdrachten voordat het werkboek beschikbaar wordt.
             </p>
           </div>
           <button type="button" onClick={onCancel} className="shrink-0 text-xs font-bold text-text-muted hover:text-text-primary">
@@ -78,7 +77,7 @@ export default function ImportFlow({ onCancel, onComplete }: ImportFlowProps) {
                     : "cursor-not-allowed bg-slate-100 text-text-muted opacity-60"
               }`}
             >
-              {n}. {n === 1 ? "Upload" : n === 2 ? "Preview" : "Bevestigen"}
+              {n}. {n === 1 ? "Gegevens" : n === 2 ? "Controle" : "Bevestigen"}
             </button>
           ))}
         </div>

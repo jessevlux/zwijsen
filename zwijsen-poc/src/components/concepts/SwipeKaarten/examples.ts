@@ -3,8 +3,8 @@ import type { SwipeKaartenContent } from "../../../types/exerciseContent";
 import type { SwipeCardData } from "../../../types/content";
 
 export const vloggenSwipeBrief: ConceptBrief = {
-  title: "Swipe-kaarten — Vloggen",
-  themeLabel: "Groep 8 · Taal · Thema: Vloggen",
+  title: "Welk woord past?",
+  themeLabel: "Vloggen",
   situation:
     "Sleep de kaart naar links of rechts om het woord te kiezen dat in de zin past. Omhoog = even lastig, dan komt de kaart later nog een keer terug.",
   question: "Welk woord past in de zin? Kies met een swipe of met de knoppen onderaan.",

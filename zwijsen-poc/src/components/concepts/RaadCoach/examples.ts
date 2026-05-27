@@ -3,8 +3,8 @@ import type { RaadCoachContent } from "../../../types/exerciseContent";
 import type { RaadCoachWord } from "../../../types/content";
 
 export const vloggenRaadCoachBrief: ConceptBrief = {
-  title: "Raad & Coach — solo",
-  themeLabel: "Groep 8 · Taal · Thema: Vloggen",
+  title: "Raad het woord",
+  themeLabel: "Vloggen",
   situation:
     "De coach op het scherm geeft je hints over één woord. Jij raadt het door te typen. Extra letters of een voorbeeldzin kosten punten — hoe minder hulp, hoe hoger je score.",
   question: "Raad het woord van de coach. Typ je antwoord en gebruik hints alleen als je echt vastloopt.",

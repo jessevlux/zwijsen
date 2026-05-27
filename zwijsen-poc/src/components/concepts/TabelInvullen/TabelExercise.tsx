@@ -1,10 +1,12 @@
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import type { TabelInvullenContent } from "../../../types/exerciseContent";
+import type { SourceText } from "../../../types/workbook";
 
 interface TabelExerciseProps {
   content: TabelInvullenContent;
   accentColor: string;
+  sourceText?: SourceText;
   onComplete: (correct: number, total: number) => void;
 }
 
@@ -17,6 +19,7 @@ interface CellValue {
 export default function TabelExercise({
   content,
   accentColor,
+  sourceText,
   onComplete,
 }: TabelExerciseProps) {
   const [cellValues, setCellValues] = useState<CellValue[]>([]);
@@ -51,10 +54,15 @@ export default function TabelExercise({
         ?.cells.find((c) => c.columnId === columnId);
 
       const key = rowId + "-" + columnId;
-      const isCorrect =
-        cellDef?.correctAnswers?.some(
-          (a) => a.toLowerCase() === userValue.toLowerCase()
-        ) || false;
+      const openCell =
+        content.openAnswers ||
+        !cellDef?.correctAnswers ||
+        cellDef.correctAnswers.length === 0;
+      const isCorrect = openCell
+        ? userValue.trim().length > 0
+        : cellDef!.correctAnswers!.some(
+            (a) => a.toLowerCase() === userValue.trim().toLowerCase(),
+          );
 
       feedback.set(key, isCorrect);
       if (isCorrect) correct++;
@@ -81,7 +89,15 @@ export default function TabelExercise({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col items-center overflow-y-auto px-4 py-6 sm:py-8">
-      <div className="w-full max-w-2xl space-y-6">
+      <div className="w-full max-w-3xl space-y-6">
+        {sourceText?.body && (
+          <aside className="rounded-2xl border border-border-subtle bg-white/90 px-4 py-3 shadow-sm">
+            <p className="text-xs font-black uppercase tracking-wide text-brand-orange">
+              {sourceText.label}
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-text-secondary">{sourceText.body}</p>
+          </aside>
+        )}
         <div className="overflow-x-auto rounded-2xl border border-black/8 bg-white/90 shadow-sm">
           <table className="w-full text-sm">
             <thead>
@@ -120,7 +136,7 @@ export default function TabelExercise({
                                 ? "border-red-500 bg-red-100"
                                 : "border-gray-300 bg-white"
                             }`}
-                            placeholder="Vul in..."
+                            placeholder={cell.placeholder ?? "Vul in..."}
                           />
                         ) : (
                           <span className="font-bold text-text-primary">
@@ -144,7 +160,9 @@ export default function TabelExercise({
               className="rounded-xl bg-white p-4"
             >
               <div className="text-sm font-bold text-text-primary">
-                {Array.from(feedbackMap.values()).filter((v) => v).length} van {editableCells} goed
+                {content.openAnswers
+                  ? `Je plan is compleet (${Array.from(feedbackMap.values()).filter((v) => v).length} van ${editableCells} ingevuld).`
+                  : `${Array.from(feedbackMap.values()).filter((v) => v).length} van ${editableCells} goed`}
               </div>
             </motion.div>
           )}
@@ -158,7 +176,7 @@ export default function TabelExercise({
                 className="flex-1 rounded-2xl bg-white px-4 py-3 font-black text-text-primary transition-all disabled:opacity-50"
                 style={{ borderColor: accentColor, borderWidth: "2px" }}
               >
-                Controleren
+                {content.openAnswers ? "Plan controleren" : "Controleren"}
               </button>
             ) : (
               <motion.button

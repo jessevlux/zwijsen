@@ -15,6 +15,45 @@ interface Word {
   index: number;
 }
 
+interface CheckResult {
+  correctCount: number;
+  wrongCount: number;
+  missedCount: number;
+  isFullyCorrect: boolean;
+}
+
+const DEFAULT_MARKING_LABEL = { singular: "juist woord", plural: "juiste woorden" };
+
+function spanMatches(
+  word: Pick<Word, "start" | "end">,
+  span: { start: number; end: number },
+): boolean {
+  return word.start === span.start && word.end === span.end;
+}
+
+function computeCheckResult(
+  words: Word[],
+  selectedIndices: number[],
+  correctSpans: { start: number; end: number }[],
+): CheckResult {
+  const selected = selectedIndices.map((idx) => words[idx]);
+  const correctSelected = selected.filter((w) =>
+    correctSpans.some((cs) => spanMatches(w, cs)),
+  );
+  const wrongSelected = selected.filter(
+    (w) => !correctSpans.some((cs) => spanMatches(w, cs)),
+  );
+  const missedSpans = correctSpans.filter((cs) => !selected.some((w) => spanMatches(w, cs)));
+
+  return {
+    correctCount: correctSelected.length,
+    wrongCount: wrongSelected.length,
+    missedCount: missedSpans.length,
+    isFullyCorrect:
+      correctSelected.length === correctSpans.length && wrongSelected.length === 0,
+  };
+}
+
 export default function MarkerenExercise({
   content,
   accentColor,
@@ -22,12 +61,12 @@ export default function MarkerenExercise({
 }: MarkerenExerciseProps) {
   const [selectedWordIndices, setSelectedWordIndices] = useState<number[]>([]);
   const [hasChecked, setHasChecked] = useState(false);
-  const [isCorrect, setIsCorrect] = useState(false);
+  const [checkResult, setCheckResult] = useState<CheckResult | null>(null);
 
   const words = useMemo(() => {
     const wordList: Word[] = [];
     const regex = /\b\w+\b/g;
-    let match;
+    let match: RegExpExecArray | null;
 
     while ((match = regex.exec(content.text)) !== null) {
       wordList.push({
@@ -41,44 +80,74 @@ export default function MarkerenExercise({
     return wordList;
   }, [content.text]);
 
-  const toggleWord = useCallback((index: number) => {
-    if (hasChecked) return;
-    setSelectedWordIndices((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
-    );
-  }, [hasChecked]);
+  const toggleWord = useCallback(
+    (index: number) => {
+      if (hasChecked) return;
+      setSelectedWordIndices((prev) =>
+        prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
+      );
+    },
+    [hasChecked],
+  );
 
   const handleCheck = useCallback(() => {
-    const selectedSpans = selectedWordIndices
-      .map((idx) => words[idx])
-      .sort((a, b) => a.start - b.start)
-      .map((word) => ({ start: word.start, end: word.end }));
-
-    const correct =
-      selectedSpans.length === content.correctSpans.length &&
-      selectedSpans.every((span) =>
-        content.correctSpans.some(
-          (cs) => cs.start === span.start && cs.end === span.end
-        )
-      );
-
-    setIsCorrect(correct);
+    const result = computeCheckResult(words, selectedWordIndices, content.correctSpans);
+    setCheckResult(result);
     setHasChecked(true);
   }, [selectedWordIndices, words, content.correctSpans]);
 
   const handleDone = useCallback(() => {
-    onComplete(isCorrect);
-  }, [isCorrect, onComplete]);
+    onComplete(checkResult?.isFullyCorrect ?? false);
+  }, [checkResult, onComplete]);
 
-  const isWordMarked = (wordIndex: number) => {
-    return selectedWordIndices.includes(wordIndex);
+  const isWordMarked = (wordIndex: number) => selectedWordIndices.includes(wordIndex);
+
+  const isWordCorrectTarget = (word: Word) =>
+    content.correctSpans.some((cs) => spanMatches(word, cs));
+
+  const getWordClassName = (word: Word, marked: boolean) => {
+    if (!hasChecked) {
+      return marked
+        ? "border-amber-400 bg-amber-50 text-text-primary"
+        : "border-gray-300 bg-white hover:border-gray-400";
+    }
+    if (marked && isWordCorrectTarget(word)) {
+      return "border-green-500 bg-green-100 text-green-900";
+    }
+    if (marked && !isWordCorrectTarget(word)) {
+      return "border-red-500 bg-red-100 text-red-900";
+    }
+    if (!marked && isWordCorrectTarget(word)) {
+      return "border-green-500 border-dashed bg-green-50 text-green-800";
+    }
+    return "border-gray-200 bg-gray-50 text-text-muted opacity-70";
   };
 
-  const isWordCorrect = (word: Word) => {
-    return content.correctSpans.some(
-      (cs) => cs.start === word.start && cs.end === word.end
-    );
-  };
+  const feedbackMessage = useMemo(() => {
+    if (!checkResult) return "";
+    const { correctCount, wrongCount, missedCount, isFullyCorrect } = checkResult;
+    const total = content.correctSpans.length;
+    const label = content.markingLabel ?? DEFAULT_MARKING_LABEL;
+
+    if (isFullyCorrect) {
+      return `Goed! Je hebt alle ${label.plural} gemarkeerd.`;
+    }
+
+    const parts = [`Je hebt ${correctCount} van de ${total} ${label.plural} gemarkeerd.`];
+    if (wrongCount > 0) {
+      parts.push(
+        `Sommige woorden die je markeerde zijn geen ${label.singular}. Markeer alleen ${label.plural}.`,
+      );
+    }
+    if (missedCount > 0) {
+      parts.push(
+        missedCount === 1
+          ? `Je mist nog een ${label.singular}.`
+          : `Je mist nog ${label.plural}.`,
+      );
+    }
+    return parts.join(" ");
+  }, [checkResult, content.correctSpans.length, content.markingLabel]);
 
   return (
     <div className="flex min-h-0 flex-1 flex-col items-center overflow-y-auto px-4 py-6 sm:py-8">
@@ -90,7 +159,6 @@ export default function MarkerenExercise({
           <div className="flex flex-wrap gap-2">
             {words.map((word) => {
               const marked = isWordMarked(word.index);
-              const correct = isWordCorrect(word);
 
               return (
                 <motion.button
@@ -98,18 +166,10 @@ export default function MarkerenExercise({
                   type="button"
                   onClick={() => toggleWord(word.index)}
                   disabled={hasChecked}
-                  className={`px-3 py-2 rounded-lg border-2 font-bold transition-all ${
-                    marked
-                      ? hasChecked
-                        ? correct
-                          ? "border-green-500 bg-green-100 text-green-900"
-                          : "border-red-500 bg-red-100 text-red-900"
-                        : `border-[${accentColor}] bg-yellow-100 text-text-primary`
-                      : "border-gray-300 bg-white hover:border-gray-400"
-                  }`}
+                  className={`rounded-lg border-2 px-3 py-2 font-bold transition-all ${getWordClassName(word, marked)}`}
                   style={
                     marked && !hasChecked
-                      ? { borderColor: accentColor, backgroundColor: "rgba(255, 193, 7, 0.3)" }
+                      ? { borderColor: accentColor, backgroundColor: "rgba(255, 193, 7, 0.25)" }
                       : undefined
                   }
                   whileHover={!hasChecked ? { scale: 1.05 } : undefined}
@@ -123,22 +183,20 @@ export default function MarkerenExercise({
         </div>
 
         <div className="space-y-3">
-          {hasChecked && (
+          {hasChecked && checkResult && (
             <motion.div
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               className={`rounded-xl p-4 ${
-                isCorrect ? "bg-green-100 text-green-900" : "bg-red-100 text-red-900"
+                checkResult.isFullyCorrect
+                  ? "bg-green-100 text-green-900"
+                  : "bg-amber-50 text-amber-950"
               }`}
             >
               <div className="text-sm font-bold">
-                {isCorrect ? "✓ Goed!" : "✗ Niet goed."}
+                {checkResult.isFullyCorrect ? "Goed!" : "Nog niet helemaal goed"}
               </div>
-              <p className="mt-2 text-sm">
-                {isCorrect
-                  ? "Je hebt alle woorden correct gemarkeerd!"
-                  : `Je hebt ${selectedWordIndices.length} van ${content.correctSpans.length} woorden correct gemarkeerd.`}
-              </p>
+              <p className="mt-2 text-sm leading-relaxed">{feedbackMessage}</p>
             </motion.div>
           )}
 

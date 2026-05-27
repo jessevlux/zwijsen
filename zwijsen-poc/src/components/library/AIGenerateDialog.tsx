@@ -39,12 +39,12 @@ export default function AIGenerateDialog({ open, exercise, onClose }: AIGenerate
         aria-modal="true"
         className="w-full max-w-md rounded-2xl bg-white p-5 shadow-2xl ring-2 ring-black/5"
       >
-        <h2 className="text-lg font-black text-text-primary">AI-variant (concept)</h2>
-        <p className="mt-1 text-xs text-text-muted leading-relaxed">
-          Flow klaarzetten voor inhoudelijke varianten. Geen API-aanroep in deze PoC.
+        <h2 className="text-lg font-black text-text-primary">Variant genereren</h2>
+        <p className="mt-1 text-sm leading-relaxed text-text-secondary">
+          Maak een alternatieve opdracht op basis van de huidige inhoud.
         </p>
 
-        <label className="mt-4 block text-xs font-bold uppercase text-text-muted">Doel-type</label>
+        <label className="mt-4 block text-xs font-bold uppercase text-text-muted">Opdrachttype</label>
         <select
           className="mt-1 w-full rounded-lg border border-border-subtle px-3 py-2 text-sm"
           value={targetType}
@@ -59,27 +59,25 @@ export default function AIGenerateDialog({ open, exercise, onClose }: AIGenerate
 
         <label className="mt-3 flex items-center gap-2 text-sm">
           <input type="checkbox" checked={keepSource} onChange={(e) => setKeepSource(e.target.checked)} />
-          Brontekst behouden (als gekoppeld)
+          Brontekst behouden (indien gekoppeld)
         </label>
 
-        <p className="mt-3 text-[11px] text-amber-800 bg-amber-50 rounded-lg px-2 py-2">
-          {/* TODO(handover): koppel aan AI-endpoint; stuur brontekst + opdrachtmetadata mee. */}
-          TODO(handover): koppel aan AI-endpoint (geen keys in frontend repo).
+        <p className="mt-3 rounded-lg bg-surface-muted px-3 py-2 text-xs text-text-muted">
+          Deze functie is nog niet beschikbaar.
         </p>
 
         <div className="mt-4 flex gap-2">
           <button
             type="button"
             disabled
-            className="flex-1 rounded-xl bg-brand-orange py-2.5 text-sm font-black text-white opacity-40 cursor-not-allowed"
-            title="Nog niet geïmplementeerd"
+            className="flex-1 cursor-not-allowed rounded-xl bg-brand-orange py-2.5 text-sm font-black text-white opacity-40"
           >
             Genereren
           </button>
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 rounded-xl border border-border-subtle py-2.5 text-sm font-bold text-text-primary"
+            className="rounded-xl border border-border-subtle px-4 py-2.5 text-sm font-bold"
           >
             Sluiten
           </button>

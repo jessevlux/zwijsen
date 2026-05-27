@@ -5,10 +5,12 @@ export default function DonePanel({
   correct,
   total,
   onRestart,
+  openAnswers = false,
 }: {
   correct: number;
   total: number;
   onRestart: () => void;
+  openAnswers?: boolean;
 }) {
   const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
 
@@ -25,7 +27,9 @@ export default function DonePanel({
       <div>
         <h2 className="text-2xl font-black text-text-primary">Klaar!</h2>
         <p className="mt-2 text-sm leading-relaxed text-text-secondary">
-          Je hebt de tabel ingevuld. Goed werk!
+          {openAnswers
+            ? "Je vlogplan staat klaar. Je kunt nu gaan filmen!"
+            : "Je hebt de tabel ingevuld. Goed werk!"}
         </p>
       </div>
       <div className="w-full rounded-2xl bg-surface-muted px-4 py-4 text-left">

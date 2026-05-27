@@ -3,8 +3,8 @@ import type { ConceptKaartContent } from "../../../types/exerciseContent";
 import type { CorrectPair, InventoryCategory, InventoryWord } from "../../../types/content";
 
 export const vloggenConceptKaartBrief: ConceptBrief = {
-  title: "Woordweb voor je vlog-recensie",
-  themeLabel: "Groep 8 · Taal · Thema: Vloggen",
+  title: "Maak je woordweb",
+  themeLabel: "Vloggen",
   situation:
     "Je gaat een vlog opnemen over een nieuwe game of film! Maak hieronder je woordweb, zodat je precies weet welke woorden je in je video kunt gebruiken.",
   question:

@@ -57,11 +57,6 @@ export default function ConfirmStep({ draft, onBack, onSave }: Props) {
         </div>
       </dl>
 
-      <p className="text-[11px] text-text-muted leading-relaxed">
-        {/* TODO(handover): na PDF-import automatisch opdrachten + bronteksten vullen. */}
-        TODO(handover): koppel bevestiging aan parser → vul <code>Exercise.content</code> en <code>SourceText.body</code>.
-      </p>
-
       <div className="flex gap-2 pt-2">
         <button type="button" onClick={onBack} className="rounded-xl border border-border-subtle px-4 py-2 text-sm font-bold">
           Terug

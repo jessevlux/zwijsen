@@ -1,4 +1,6 @@
 import { useCallback, useState } from "react";
+import { useLibrary } from "../../state/LibraryContext";
+import { getNextExerciseId } from "../../library/workbookNavigation";
 import { AnimatePresence, motion } from "framer-motion";
 import TopNav from "./TopNav";
 import WelcomeScreen from "./WelcomeScreen";
@@ -39,6 +41,8 @@ function renderDemoConcept(id: string) {
 export default function AppShell() {
   const [view, setView] = useState<AppView>({ name: "welcome" });
   const [viewMode, setViewMode] = useState<ViewMode>("student");
+  const { getWorkbook } = useLibrary();
+  const studentMode = viewMode === "student";
 
   const isFullHeight =
     (view.name === "demo" && isDemoFullHeight(view)) ||
@@ -133,7 +137,6 @@ export default function AppShell() {
         return (
           <WorkbookRubric
             workbookId={view.workbookId}
-            studentMode={viewMode === "student"}
             onContinue={() =>
               setView({
                 name: "workbook-exercises",
@@ -180,6 +183,17 @@ export default function AppShell() {
     }
   }
 
+  let onNextExercise: (() => void) | undefined;
+  if (view.name === "exercise" && view.returnToWorkbookId) {
+    const wb = getWorkbook(view.returnToWorkbookId);
+    const nextId = wb && getNextExerciseId(wb, view.exerciseId, studentMode);
+    if (nextId) {
+      const workbookId = view.returnToWorkbookId;
+      onNextExercise = () =>
+        setView({ name: "exercise", exerciseId: nextId, returnToWorkbookId: workbookId });
+    }
+  }
+
   const mainKey =
     view.name === "welcome"
       ? "welcome"
@@ -207,6 +221,7 @@ export default function AppShell() {
         onGoLibrary={() => setView({ name: "library" })}
         onGoImport={() => setView({ name: "import" })}
         onBack={handleNavBack}
+        onNextExercise={onNextExercise}
       />
 
       <main
@@ -227,16 +242,8 @@ export default function AppShell() {
       </main>
 
       {viewMode === "editor" && (
-        <footer className="flex items-center justify-between border-t border-slate-100 bg-white px-6 py-2">
-          <span className="text-xs text-slate-400">
-            Zwijsen PoC · Iteratie 0 · Groep 4–8
-          </span>
-          <motion.div className="flex items-center gap-1.5">
-            <div className="h-2 w-2 animate-pulse rounded-full bg-accent-success" />
-            <span className="text-xs text-slate-400">
-              Human-in-the-loop actief
-            </span>
-          </motion.div>
+        <footer className="border-t border-slate-100 bg-white px-6 py-2 text-center">
+          <span className="text-xs text-slate-400">Zwijsen Taaljacht</span>
         </footer>
       )}
     </div>

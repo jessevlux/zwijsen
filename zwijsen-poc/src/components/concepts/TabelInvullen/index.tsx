@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Table2 } from "lucide-react";
 import { toneTokens } from "../../../data/concepts";
 import type { TabelInvullenContent } from "../../../types/exerciseContent";
+import type { SourceText } from "../../../types/workbook";
 import ConceptIntro from "../shared/ConceptIntro";
 import ConceptHeader from "../shared/ConceptHeader";
 import TabelExercise from "./TabelExercise";
@@ -20,9 +21,10 @@ const stepConfig: [StepCfg, StepCfg, StepCfg] = [
 
 export interface TabelInvullenProps {
   content?: TabelInvullenContent;
+  sourceText?: SourceText;
 }
 
-export default function TabelInvullen({ content }: TabelInvullenProps) {
+export default function TabelInvullen({ content, sourceText }: TabelInvullenProps) {
   const resolved = content ?? vloggenTabelContent;
   const brief = {
     themeLabel: resolved.brief.themeLabel,
@@ -82,6 +84,7 @@ export default function TabelInvullen({ content }: TabelInvullenProps) {
                   <DonePanel
                     correct={score.correct}
                     total={score.total}
+                    openAnswers={resolved.openAnswers}
                     onRestart={handleRestart}
                   />
                 </motion.div>
@@ -96,6 +99,7 @@ export default function TabelInvullen({ content }: TabelInvullenProps) {
                   <TabelExercise
                     content={resolved}
                     accentColor={ACCENT}
+                    sourceText={sourceText}
                     onComplete={handleComplete}
                   />
                 </motion.div>

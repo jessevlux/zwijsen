@@ -29,6 +29,18 @@ export interface RubricGoal {
   label: string;
 }
 
+/** Thema- en eindtaak-context voor het beginscherm (uit het taakboek). */
+export interface WorkbookIntroContext {
+  /** Bv. "Blok 6 · Taal" */
+  sectionLabel?: string;
+  /** Bv. "Doekje open" */
+  themeTitle?: string;
+  /** Bron-id uit `sources` voor de intro-paragraaf */
+  themeSourceId?: string;
+  /** Eindtaak in één zin */
+  endTask?: string;
+}
+
 export interface Exercise {
   id: string;
   workbookId: string;
@@ -54,4 +66,6 @@ export interface Workbook {
   sources: SourceText[];
   /** Optioneel: zelfevaluatie vóór opdrachten; ontbrekend of leeg = rubricscherm overslaan. */
   rubricGoals?: RubricGoal[];
+  /** Optioneel: thema en eindtaak op het beginscherm */
+  intro?: WorkbookIntroContext;
 }

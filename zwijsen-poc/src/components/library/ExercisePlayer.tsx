@@ -83,12 +83,17 @@ export default function ExercisePlayer({ exerciseId, onBack }: ExercisePlayerPro
           <Markeren content={c} />
         </div>
       );
-    case "tabel-invullen":
+    case "tabel-invullen": {
+      const sourceId = exercise.sourceTextId ?? c.sourceTextId;
+      const sourceText = sourceId
+        ? hit.workbook.sources.find((s) => s.id === sourceId)
+        : undefined;
       return (
         <div className="flex h-full min-h-0 flex-col">
-          <TabelInvullen content={c} />
+          <TabelInvullen content={c} sourceText={sourceText} />
         </div>
       );
+    }
     default:
       return (
         <div className="flex h-full min-h-0 flex-col">

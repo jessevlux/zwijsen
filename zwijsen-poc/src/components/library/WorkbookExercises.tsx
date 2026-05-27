@@ -54,18 +54,23 @@ export default function WorkbookExercises({
             {wb.title}
           </h1>
           <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-text-secondary">
-            Kies een opdracht om te oefenen.{" "}
-            <span className="text-text-muted">
-              {wb.grade} · {wb.side} · {wb.pages} pagina&apos;s ·{" "}
-              {wb.exercises.length}{" "}
-              {wb.exercises.length === 1 ? "opdracht" : "opdrachten"}
-            </span>
+            {studentMode
+              ? "Werk de opdrachten van boven naar beneden af."
+              : "Kies een opdracht om te oefenen."}
+            {!studentMode && (
+              <span className="text-text-muted">
+                {" "}
+                {wb.grade} · {wb.side} · {wb.pages} pagina&apos;s ·{" "}
+                {wb.exercises.length}{" "}
+                {wb.exercises.length === 1 ? "opdracht" : "opdrachten"}
+              </span>
+            )}
           </p>
         </header>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {wb.exercises.map((ex, i) => {
             const { Icon, accentColor, title, subtitle, badgeNumber } =
-              getExerciseVisualMeta(ex, i);
+              getExerciseVisualMeta(ex, i, { studentMode });
             const canOpen = !studentMode || !!ex.content;
             const disabledStudent = studentMode && !ex.content;
 
@@ -89,7 +94,7 @@ export default function WorkbookExercises({
                   whileTap={canOpen ? { scale: 0.98 } : undefined}
                   onClick={() => {
                     if (!canOpen) return;
-                    if (ex.variants && ex.variants.length > 0) {
+                    if (!studentMode && ex.variants && ex.variants.length > 0) {
                       setVariantExercise(ex);
                     } else {
                       onOpenExercise(ex.id);
@@ -157,11 +162,11 @@ export default function WorkbookExercises({
                       )}
                     </motion.div>
                   )}
-                  <p className="mt-2 text-[11px] font-bold text-text-muted">
-                    {ex.content
-                      ? "Klaar om te oefenen"
-                      : "Nog geen digitale inhoud"}
-                  </p>
+                  {!studentMode && (
+                    <p className="mt-2 text-[11px] font-bold text-text-muted">
+                      {ex.content ? "Beschikbaar" : "In uitwerking"}
+                    </p>
+                  )}
                 </motion.button>
 
                 {!studentMode && (
@@ -170,7 +175,7 @@ export default function WorkbookExercises({
                     onClick={() => setAiExercise(ex)}
                     className="mt-2 w-full rounded-2xl border border-border-subtle py-2 text-xs font-bold text-text-primary hover:bg-surface-muted"
                   >
-                    Genereer AI-variant
+                    Variant genereren
                   </button>
                 )}
               </motion.div>

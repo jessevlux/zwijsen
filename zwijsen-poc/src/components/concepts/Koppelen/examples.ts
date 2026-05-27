@@ -2,8 +2,8 @@ import type { ConceptBrief } from "../shared/types";
 import type { KoppelenLijnenContent } from "../../../types/exerciseContent";
 
 export const vloggenKoppelenBrief: ConceptBrief = {
-  title: "Koppel het woord aan de betekenis",
-  themeLabel: "Groep 8 · Taal · Thema: Vloggen",
+  title: "Koppel woord en betekenis",
+  themeLabel: "Vloggen",
   situation: "Voor je vlog moet je de woorden goed kunnen uitleggen.",
   question: "Trek lijnen tussen woord en definitie.",
   steps: ["Tik links, dan rechts.", "Of sleep een lijn.", "Controleer je koppels."],
@@ -30,7 +30,7 @@ export const vloggenKoppelenContent2: KoppelenLijnenContent = {
   type: "koppelen-lijnen",
   brief: {
     title: "Vlogtermen",
-    themeLabel: "Groep 8 · Taal · Thema: Vloggen",
+    themeLabel: "Vloggen",
     situation: "Je leert de juiste termen voor je vlog.",
     question: "Koppel de termen aan hun betekenis.",
     steps: ["Tik links, dan rechts.", "Verbind alle termen.", "Controleer."],
@@ -56,7 +56,7 @@ export const vloggenKoppelenContent3: KoppelenLijnenContent = {
   type: "koppelen-lijnen",
   brief: {
     title: "Vlogtonen",
-    themeLabel: "Groep 8 · Taal · Thema: Vloggen",
+    themeLabel: "Vloggen",
     situation: "Je kiest een passende toon voor je vlog.",
     question: "Koppel de toon aan het soort vlog.",
     steps: ["Tik links, dan rechts.", "Verbind alle tonen.", "Controleer."],

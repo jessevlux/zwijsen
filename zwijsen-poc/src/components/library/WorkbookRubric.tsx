@@ -6,13 +6,11 @@ import EmojiRubric from "./EmojiRubric";
 
 interface WorkbookRubricProps {
   workbookId: string;
-  studentMode?: boolean;
   onContinue: () => void;
 }
 
 export default function WorkbookRubric({
   workbookId,
-  studentMode = false,
   onContinue,
 }: WorkbookRubricProps) {
   const { getWorkbook } = useLibrary();
@@ -71,9 +69,8 @@ export default function WorkbookRubric({
           Hoe goed ken je dit al?
         </h1>
         <p className="mx-auto mt-3 max-w-xl text-center text-sm leading-relaxed text-text-secondary">
-          {studentMode
-            ? "Zet per leerdoel je schuifregelaar op het niveau dat nu bij jou past. Zo weet je waar je staat voordat je aan de slag gaat."
-            : "Zelfevaluatie zoals in het werkboek. Later kun je hier uitgebreidere context tonen."}
+          Zet per leerdoel je schuifregelaar op het niveau dat nu bij jou past. Zo weet je waar je staat
+          voordat je aan de slag gaat.
         </p>
 
         <div className="mt-10">

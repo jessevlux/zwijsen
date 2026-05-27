@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, BookOpen, Home, Upload } from "lucide-react";
+import { ArrowLeft, BookOpen, ChevronRight, Home, Upload } from "lucide-react";
 import type { AppView } from "./appView";
 import { isWorkbookFlowView } from "./appView";
 import type { ViewMode } from "./viewMode";
@@ -13,7 +13,10 @@ interface TopNavProps {
   onGoLibrary: () => void;
   onGoImport: () => void;
   onBack?: () => void;
+  onNextExercise?: () => void;
 }
+
+const NAV_GAP = "gap-3";
 
 function navBtn(active: boolean, extra = "") {
   return `flex min-h-[48px] shrink-0 items-center gap-2 rounded-2xl border px-3 py-2 text-sm font-bold whitespace-nowrap transition-colors cursor-pointer sm:px-4 ${
@@ -31,6 +34,7 @@ export default function TopNav({
   onGoLibrary,
   onGoImport,
   onBack,
+  onNextExercise,
 }: TopNavProps) {
   const editor = viewMode === "editor";
   const showBack = isWorkbookFlowView(view) && !!onBack;
@@ -43,86 +47,95 @@ export default function TopNav({
 
   return (
     <nav
-      className="flex items-center gap-2 border-b border-border-subtle bg-surface-card px-4 py-3 sm:px-6"
-      aria-label={editor ? "Redacteur: start, bibliotheek en import" : "Leerling: navigatie"}
+      className={`flex items-center ${NAV_GAP} border-b border-border-subtle bg-surface-card px-4 py-3 sm:px-6`}
+      aria-label="Hoofdnavigatie"
     >
-      <div className="mr-2 flex shrink-0 items-center gap-2 sm:mr-4">
-        <button
-          type="button"
-          onClick={onGoWelcome}
-          className="flex shrink-0 items-center gap-2 rounded-xl outline-none ring-brand-orange transition-shadow hover:opacity-90 focus-visible:ring-2"
-          title={editor ? "Terug naar start" : "Terug naar werkboeken"}
-        >
-          <motion.div
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-orange shadow-[var(--shadow-card)]"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <span className="text-sm font-black leading-none text-white">Z</span>
-          </motion.div>
-          <span className="hidden text-base font-black text-text-primary sm:block">Zwijsen</span>
-        </button>
+      <motion.button
+        type="button"
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.97 }}
+        onClick={onGoWelcome}
+        className="flex min-h-[48px] shrink-0 cursor-pointer items-center gap-2.5 rounded-2xl px-1 py-2 outline-none ring-brand-orange transition-opacity hover:opacity-90 focus-visible:ring-2 sm:px-2"
+        title="Terug naar start"
+      >
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-brand-orange text-sm font-black text-white shadow-[var(--shadow-card)]">
+          Z
+        </span>
+        <span className="hidden text-base font-black text-text-primary sm:inline">Zwijsen</span>
+      </motion.button>
 
-        {showBack ? (
+      {showBack ? (
+        <motion.button
+          type="button"
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          onClick={onBack}
+          className={navBtn(false)}
+          title="Terug"
+        >
+          <ArrowLeft size={18} className="shrink-0" strokeWidth={2} aria-hidden />
+          <span className="hidden sm:inline">Terug</span>
+        </motion.button>
+      ) : null}
+
+      <motion.button
+        type="button"
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.97 }}
+        onClick={onGoWelcome}
+        className={navBtn(view.name === "welcome")}
+        title="Start"
+      >
+        <Home size={18} className="shrink-0" strokeWidth={2} aria-hidden />
+        <span className="hidden md:inline">Start</span>
+      </motion.button>
+
+      {editor && (
+        <>
           <motion.button
             type="button"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
-            onClick={onBack}
-            className={navBtn(false)}
-            title="Terug"
+            onClick={onGoLibrary}
+            className={navBtn(view.name === "library" || inWorkbookFlow)}
+            title="Bibliotheek"
           >
-            <ArrowLeft size={18} className="shrink-0" strokeWidth={2} aria-hidden />
-            <span className="hidden sm:inline">Terug</span>
+            <BookOpen size={18} className="shrink-0" strokeWidth={2} aria-hidden />
+            <span className="hidden md:inline">Bibliotheek</span>
+          </motion.button>
+
+          <motion.button
+            type="button"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={onGoImport}
+            className={navBtn(view.name === "import")}
+            title="Werkboek importeren"
+          >
+            <Upload size={18} className="shrink-0" strokeWidth={2} aria-hidden />
+            <span className="hidden md:inline">Importeren</span>
+          </motion.button>
+        </>
+      )}
+
+      <div className="min-w-0 flex-1" aria-hidden />
+
+      <div className={`flex shrink-0 items-center ${NAV_GAP}`}>
+        {onNextExercise ? (
+          <motion.button
+            type="button"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={onNextExercise}
+            className={navBtn(false)}
+            title="Volgende opdracht"
+          >
+            Volgende
+            <ChevronRight size={18} className="shrink-0" strokeWidth={2} aria-hidden />
           </motion.button>
         ) : null}
+        <ViewModeSwitch mode={viewMode} onChange={onViewModeChange} />
       </div>
-
-      <div className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto">
-        {editor && (
-          <>
-            <motion.button
-              type="button"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={onGoWelcome}
-              className={navBtn(view.name === "welcome")}
-              title="Start — overzicht voor redacteur"
-            >
-              <Home size={18} className="shrink-0" strokeWidth={2} aria-hidden />
-              <span className="hidden md:inline">Start</span>
-            </motion.button>
-
-            <motion.button
-              type="button"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={onGoLibrary}
-              className={navBtn(
-                view.name === "library" || inWorkbookFlow,
-              )}
-              title="Werkboeken beheren (redacteur)"
-            >
-              <BookOpen size={18} className="shrink-0 text-text-secondary" strokeWidth={2} aria-hidden />
-              <span className="hidden md:inline">Bibliotheek</span>
-            </motion.button>
-
-            <motion.button
-              type="button"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={onGoImport}
-              className={navBtn(view.name === "import")}
-              title="Begeleide import: PDF wordt niet volledig automatisch omgezet; controle blijft onderdeel van de flow"
-            >
-              <Upload size={18} className="shrink-0 text-text-secondary" strokeWidth={2} aria-hidden />
-              <span className="hidden md:inline">Importeren</span>
-            </motion.button>
-          </>
-        )}
-      </div>
-
-      <ViewModeSwitch mode={viewMode} onChange={onViewModeChange} />
     </nav>
   );
 }

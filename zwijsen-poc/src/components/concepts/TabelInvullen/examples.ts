@@ -1,34 +1,140 @@
 import type { ConceptBrief } from "../shared/types";
 import type { TabelInvullenContent } from "../../../types/exerciseContent";
+const VLOGGEN_SOURCE_VLOGSOORTEN_ID = "src-vlog-vlogsoorten";
 
 export const vloggenTabelBrief: ConceptBrief = {
-  title: "Maak je vlogplan",
-  themeLabel: "Groep 8 · Taal · Thema: Vloggen",
-  situation: "Een goed plan helpt je vlog strak te presenteren.",
-  question: "Vul de tabel in.",
-  steps: ["Lees de koppen.", "Vul de lege vakjes in.", "Controleer."],
+  title: "Schrijf je vlogplan",
+  themeLabel: "Vloggen",
+  situation:
+    "In het taakboek bedenk je een plan voordat je gaat filmen. Welke soort vlog past bij jouw onderwerp, doel en publiek?",
+  question:
+    "Vul je vlogplan in. Gebruik de ideeën uit de brontekst over vlogsoorten. Elk vakje mag over jouw eigen vlog gaan.",
+  steps: [
+    "Lees de brontekst over soorten vlogs (challenge, dagvlog, recensie, …).",
+    "Vul alle onderdelen van je plan in.",
+    "Controleer of je plan compleet is — dan weet je wat je gaat filmen.",
+  ],
 };
 
+/** Les 3 — brainstorm / vlogplan (blok 6, taakboek p. 9). */
 export const vloggenTabelContent: TabelInvullenContent = {
   type: "tabel-invullen",
   brief: vloggenTabelBrief,
+  sourceTextId: VLOGGEN_SOURCE_VLOGSOORTEN_ID,
+  openAnswers: true,
   columns: [
-    { id: "onderdeel", header: "Onderdeel" },
-    { id: "invulling", header: "Jouw plan" },
+    { id: "onderdeel", header: "Onderdeel van je plan" },
+    { id: "invulling", header: "Jouw antwoord" },
   ],
   rows: [
     {
-      id: "row-1",
+      id: "row-soort",
       cells: [
-        { columnId: "onderdeel", editable: false, value: "Onderwerp" },
-        { columnId: "invulling", editable: true, correctAnswers: ["recensie", "game", "film"] },
+        { columnId: "onderdeel", editable: false, value: "Soort vlog" },
+        {
+          columnId: "invulling",
+          editable: true,
+          placeholder: "Bijv. dagvlog, recensie, how-to …",
+        },
       ],
     },
     {
-      id: "row-2",
+      id: "row-onderwerp",
+      cells: [
+        { columnId: "onderdeel", editable: false, value: "Onderwerp" },
+        {
+          columnId: "invulling",
+          editable: true,
+          placeholder: "Waar gaat je vlog over?",
+        },
+      ],
+    },
+    {
+      id: "row-doel",
+      cells: [
+        { columnId: "onderdeel", editable: false, value: "Doel" },
+        {
+          columnId: "invulling",
+          editable: true,
+          placeholder: "Wat wil je bereiken met deze vlog?",
+        },
+      ],
+    },
+    {
+      id: "row-publiek",
+      cells: [
+        { columnId: "onderdeel", editable: false, value: "Publiek" },
+        {
+          columnId: "invulling",
+          editable: true,
+          placeholder: "Voor wie maak je de vlog?",
+        },
+      ],
+    },
+    {
+      id: "row-beeld",
+      cells: [
+        { columnId: "onderdeel", editable: false, value: "In beeld of voice-over?" },
+        {
+          columnId: "invulling",
+          editable: true,
+          placeholder: "Jezelf in beeld, of alleen je stem?",
+        },
+      ],
+    },
+    {
+      id: "row-toon",
       cells: [
         { columnId: "onderdeel", editable: false, value: "Toon" },
-        { columnId: "invulling", editable: true, correctAnswers: ["lyrisch", "afstandelijk", "enthousiast"] },
+        {
+          columnId: "invulling",
+          editable: true,
+          placeholder: "Bijv. enthousiast, lyrisch, afstandelijk …",
+        },
+      ],
+    },
+    {
+      id: "row-boodschap",
+      cells: [
+        { columnId: "onderdeel", editable: false, value: "Belangrijkste boodschap" },
+        {
+          columnId: "invulling",
+          editable: true,
+          placeholder: "Wat moet de kijker onthouden?",
+        },
+      ],
+    },
+    {
+      id: "row-begin",
+      cells: [
+        { columnId: "onderdeel", editable: false, value: "Hoe begin je?" },
+        {
+          columnId: "invulling",
+          editable: true,
+          placeholder: "Je eerste zin of scene (hook)",
+        },
+      ],
+    },
+    {
+      id: "row-volgorde",
+      cells: [
+        { columnId: "onderdeel", editable: false, value: "Wat film je en in welke volgorde?" },
+        {
+          columnId: "invulling",
+          editable: true,
+          placeholder: "Stap 1, stap 2, stap 3 …",
+        },
+      ],
+    },
+    {
+      id: "row-materiaal",
+      cells: [
+        { columnId: "onderdeel", editable: false, value: "Materiaal / apparatuur" },
+        {
+          columnId: "invulling",
+          editable: true,
+          placeholder: "Camera, microfoon, statief …",
+        },
       ],
     },
   ],
@@ -38,7 +144,7 @@ export const vloggenTabelContent2: TabelInvullenContent = {
   type: "tabel-invullen",
   brief: {
     title: "Mijn vlogteam",
-    themeLabel: "Groep 8 · Taal · Thema: Vloggen",
+    themeLabel: "Vloggen",
     situation: "Je werkt met anderen aan je vlog.",
     question: "Vul je team in.",
     steps: ["Lees de koppen.", "Vul de rollen in.", "Controleer."],
@@ -76,7 +182,7 @@ export const vloggenTabelContent3: TabelInvullenContent = {
   type: "tabel-invullen",
   brief: {
     title: "Vloguitrusting",
-    themeLabel: "Groep 8 · Taal · Thema: Vloggen",
+    themeLabel: "Vloggen",
     situation: "Je maakt een checklist voor je uitrusting.",
     question: "Vul aan wat je nodig hebt.",
     steps: ["Lees wat je nodig hebt.", "Vul aan of je het hebt.", "Controleer."],

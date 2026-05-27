@@ -60,6 +60,8 @@ export interface MarkerenContent {
   instruction: string;
   text: string;
   correctSpans: { start: number; end: number }[];
+  /** Woordsoort in feedback (bijv. oordeelwoord / oordeelwoorden), niet de concrete antwoorden. */
+  markingLabel?: { singular: string; plural: string };
   sourceTextId?: string;
 }
 
@@ -74,9 +76,12 @@ export interface TabelInvullenContent {
       editable: boolean;
       value?: string;
       correctAnswers?: string[];
+      placeholder?: string;
     }[];
   }[];
   sourceTextId?: string;
+  /** Geen vaste antwoorden: elk ingevuld veld telt als goed (bijv. vlogplan). */
+  openAnswers?: boolean;
 }
 
 export type OpenSchrijvenContent = { type: "open-schrijven" };

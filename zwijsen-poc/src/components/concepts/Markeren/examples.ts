@@ -2,22 +2,29 @@ import type { ConceptBrief } from "../shared/types";
 import type { MarkerenContent } from "../../../types/exerciseContent";
 
 export const vloggenMarkerenBrief: ConceptBrief = {
-  title: "Markeer de oordeelswoorden",
-  themeLabel: "Groep 8 · Taal · Thema: Vloggen",
-  situation: "In je recensie gebruik je woorden die je mening laten zien.",
-  question: "Markeer alle woorden die een oordeel uitdrukken.",
-  steps: ["Lees de tekst.", "Tik op een woord om te markeren.", "Druk op Controleren."],
+  title: "Markeer woorden in de zin",
+  themeLabel: "Vloggen",
+  situation:
+    "Je leest een zin over een vlog. Oordeelwoorden geven je mening of zeggen wat je van iets vindt.",
+  question: "Markeer de oordeelwoorden in de zin.",
+  steps: [
+    "Lees de zin rustig.",
+    "Tik op de oordeelwoorden.",
+    "Druk op Controleren.",
+  ],
 };
 
-const text = "In mijn recensie geef ik een duidelijke beoordeling van de nieuwe game.";
+/** Zin bevat bewust géén woord dat gemarkeerd moet worden behalve recensie en beoordeling. */
+const text = "Voor mijn vlog maak ik een recensie en schrijf ik mijn beoordeling.";
 
 export const vloggenMarkerenContent: MarkerenContent = {
   type: "markeren",
   brief: vloggenMarkerenBrief,
-  instruction: "Markeer de oordeelswoorden in de zin.",
+  instruction: "Markeer de oordeelwoorden in de zin.",
+  markingLabel: { singular: "oordeelwoord", plural: "oordeelwoorden" },
   text,
   correctSpans: [
-    { start: text.indexOf("duidelijke"), end: text.indexOf("duidelijke") + "duidelijke".length },
+    { start: text.indexOf("recensie"), end: text.indexOf("recensie") + "recensie".length },
     { start: text.indexOf("beoordeling"), end: text.indexOf("beoordeling") + "beoordeling".length },
   ],
 };
@@ -28,7 +35,7 @@ export const vloggenMarkerenContent2: MarkerenContent = {
   type: "markeren",
   brief: {
     title: "Markeer positieve woorden",
-    themeLabel: "Groep 8 · Taal · Thema: Vloggen",
+    themeLabel: "Vloggen",
     situation: "Je schrijft een positieve recensie.",
     question: "Markeer de positieve beoordelingswoorden.",
     steps: ["Lees de zin.", "Tik op positieve woorden.", "Controleer."],
@@ -48,7 +55,7 @@ export const vloggenMarkerenContent3: MarkerenContent = {
   type: "markeren",
   brief: {
     title: "Markeer kritische woorden",
-    themeLabel: "Groep 8 · Taal · Thema: Vloggen",
+    themeLabel: "Vloggen",
     situation: "Je schrijft een kritische recensie.",
     question: "Markeer de kritische beoordelingswoorden.",
     steps: ["Lees de zin.", "Tik op kritische woorden.", "Controleer."],

@@ -3,7 +3,7 @@ import type { MeerkeuzeContent } from "../../../types/exerciseContent";
 
 export const vloggenMeerkeuzeBrief: ConceptBrief = {
   title: "Wat is een recensie?",
-  themeLabel: "Groep 8 · Taal · Thema: Vloggen",
+  themeLabel: "Vloggen",
   situation: "Je bereidt je vlog voor en wilt het juiste woord gebruiken.",
   question: "Welke zin beschrijft een recensie het best?",
   steps: ["Lees de vraag.", "Kies één antwoord.", "Bekijk de uitleg."],
@@ -28,7 +28,7 @@ export const vloggenMeerkeuzeContent2: MeerkeuzeContent = {
   type: "meerkeuze",
   brief: {
     title: "Soorten vlogs",
-    themeLabel: "Groep 8 · Taal · Thema: Vloggen",
+    themeLabel: "Vloggen",
     situation: "Je wilt kiezen welk soort vlog je maakt.",
     question: "Welke vlogs bestaan er?",
     steps: ["Lees de opties.", "Kies alle juiste antwoorden.", "Controleer."],
@@ -49,7 +49,7 @@ export const vloggenMeerkeuzeContent3: MeerkeuzeContent = {
   type: "meerkeuze",
   brief: {
     title: "Vlogplan maken",
-    themeLabel: "Groep 8 · Taal · Thema: Vloggen",
+    themeLabel: "Vloggen",
     situation: "Je begint met plannen voor je vlog.",
     question: "Wat hoort in je vlogplan?",
     steps: ["Lees de vraag.", "Kies het beste antwoord.", "Lees de uitleg."],

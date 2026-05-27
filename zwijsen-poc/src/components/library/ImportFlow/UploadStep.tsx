@@ -15,20 +15,14 @@ export default function UploadStep({ draft, setDraft, onNext }: Props) {
       setDraft((d) => ({ ...d, fileName: null, fileSize: null }));
       return;
     }
-    // TODO(handover): PDF-parser — nu alleen bestandsmeta voor de flow.
     setDraft((d) => ({ ...d, fileName: f.name, fileSize: f.size }));
   }
 
   return (
     <div className="mx-auto w-full max-w-lg space-y-4">
-      <span className="inline-block rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-black uppercase text-amber-900">
-        Mock — niet functioneel
-      </span>
-      <p className="text-sm text-text-secondary leading-relaxed">
-        PDF-upload staat in de UI; er wordt niets geparsed. Gebruik dit scherm om de flow met de groep af te stemmen.
-      </p>
-      <p className="text-xs text-text-muted">
-        Je kunt direct naar stap 2. Laat je de titel leeg, dan wordt bij opslaan <strong>Zonder titel</strong> gebruikt.
+      <p className="text-sm leading-relaxed text-text-secondary">
+        Vul de gegevens in en kies het PDF-bestand van het werkboek. In de volgende stap controleer je de
+        opdrachten.
       </p>
 
       <label className="block text-xs font-bold uppercase text-text-muted">Titel werkboek</label>
@@ -53,11 +47,11 @@ export default function UploadStep({ draft, setDraft, onNext }: Props) {
         value={draft.side}
         onChange={(e) => setDraft((d) => ({ ...d, side: e.target.value as BookSide }))}
       >
-        <option value="leskant">Leskant (context-opdrachten)</option>
-        <option value="taakboekje">Taakboekje (woordenschat)</option>
+        <option value="leskant">Leskant</option>
+        <option value="taakboekje">Taakboekje</option>
       </select>
 
-      <label className="block text-xs font-bold uppercase text-text-muted">Aantal pagina&apos;s (schatting)</label>
+      <label className="block text-xs font-bold uppercase text-text-muted">Aantal pagina&apos;s</label>
       <input
         type="number"
         min={1}
@@ -68,9 +62,9 @@ export default function UploadStep({ draft, setDraft, onNext }: Props) {
 
       <div className="rounded-2xl border-2 border-dashed border-border-strong bg-surface-muted/50 px-4 py-8 text-center">
         <p className="text-sm font-bold text-text-primary">PDF werkboek</p>
-        <p className="mt-1 text-xs text-text-muted">Alleen bestandsnaam + grootte; geen inhoudsverwerking.</p>
+        <p className="mt-1 text-xs text-text-muted">PDF-bestand (.pdf)</p>
         <label className="mt-4 inline-block cursor-pointer rounded-xl bg-brand-orange px-4 py-2 text-sm font-black text-white hover:opacity-95">
-          Kies bestand
+          Bestand kiezen
           <input type="file" accept="application/pdf" className="hidden" onChange={onFileChange} />
         </label>
         {draft.fileName && (

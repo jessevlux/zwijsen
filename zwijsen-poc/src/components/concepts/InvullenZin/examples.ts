@@ -2,8 +2,8 @@ import type { ConceptBrief } from "../shared/types";
 import type { InvullenZinContent } from "../../../types/exerciseContent";
 
 export const vloggenInvullenZinBrief: ConceptBrief = {
-  title: "Vul het woord in",
-  themeLabel: "Groep 8 · Taal · Thema: Vloggen",
+  title: "Vul de zin aan",
+  themeLabel: "Vloggen",
   situation: "Je schrijft de voice-over voor je vlog.",
   question: "Welk woord past in het gat?",
   steps: ["Lees de zin.", "Kies of typ het woord.", "Controleer."],
@@ -31,9 +31,21 @@ export const vloggenInvullenZinContent: InvullenZinContent = {
   sourceTextId: "src-vloggen-intro",
 };
 
+const vloggenInvullenZinBrief2: ConceptBrief = {
+  ...vloggenInvullenZinBrief,
+  title: "Vul aan: mijn vlog",
+  situation: "Je kijkt terug op je opname.",
+};
+
+const vloggenInvullenZinBrief3: ConceptBrief = {
+  ...vloggenInvullenZinBrief,
+  title: "Vul aan: wat heb je nodig?",
+  situation: "Je bereidt je vlog voor.",
+};
+
 export const vloggenInvullenZinContent2: InvullenZinContent = {
   type: "invullen-zin",
-  brief: vloggenInvullenZinBrief,
+  brief: vloggenInvullenZinBrief2,
   template:
     "Mijn {{blank-1}} was echt {{blank-2}} dit keer. Ik ben trots op het {{blank-3}}.",
   blanks: [
@@ -61,7 +73,7 @@ export const vloggenInvullenZinContent2: InvullenZinContent = {
 
 export const vloggenInvullenZinContent3: InvullenZinContent = {
   type: "invullen-zin",
-  brief: vloggenInvullenZinBrief,
+  brief: vloggenInvullenZinBrief3,
   template:
     "Voor een goede vlog heb je {{blank-1}}, {{blank-2}} en veel {{blank-3}} nodig.",
   blanks: [
